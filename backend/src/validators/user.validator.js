@@ -1,0 +1,1 @@
+//store-rating-platform/backend/src/validators/user.validator.js

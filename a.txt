@@ -1,0 +1,25 @@
+
+{{baseUrl}}:- http://localhost:5000/api
+url:-{{baseUrl}}/auth/login
+
+query for signup new user :-
+{
+    "name":"Kanishka Ramesh Deogade",
+    "email":"kanishka@gmail.com",
+    "password":"Password@1",
+    "address":"Chandrapur Maharashtra"
+}
+===============================
+password:- Kanishka@123
+========================
+query for login:- 
+{
+    "email":"kanishka@gmail.com",
+    "password":"Password@1"
+}
+================================
+query for change password:
+{
+    "oldPassword":"Password@1",
+    "newPassword":"NewPassword@1"
+}

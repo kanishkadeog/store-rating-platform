@@ -1,0 +1,1 @@
+//store-rating-platform/frontend/src/hooks/useAuth.js

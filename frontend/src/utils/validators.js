@@ -1,0 +1,1 @@
+//store-rating-platform/frontend/src/utils/validators.js
