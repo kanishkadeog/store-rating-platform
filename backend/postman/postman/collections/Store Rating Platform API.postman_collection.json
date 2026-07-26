@@ -1,0 +1,717 @@
+{
+  "info": {
+    "_postman_id": "a9d98f4e-e0d8-4cab-b9a5-9eb390648315",
+    "name": "Store Rating Platform API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Signup",
+          "id": "72d82e20-20aa-412b-8568-5d88af5aae46",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Yadav Sharma Kumarayan\",\r\n  \"email\": \"yadav@gmail.com\",\r\n  \"address\": \"Pune\",\r\n  \"password\": \"Password@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "User Login",
+          "id": "81d34448-502e-476b-8b94-d7d7e0d7ee05",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"rahul@gmail.com\",\r\n  \"password\": \"Password@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Change Password",
+          "id": "e57072cd-003d-4f7d-993c-58c048d45e86",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywicm9sZSI6IlVTRVIiLCJpYXQiOjE3ODQ5MjcxNzksImV4cCI6MTc4NTUzMTk3OX0.Q6wqR4BCIR-1M60QdKtJ2_bGTN_HFTpSJAYUeVVKBX8",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Nywicm9sZSI6IlVTRVIiLCJpYXQiOjE3ODQ5MjcxNzksImV4cCI6MTc4NTUzMTk3OX0.Q6wqR4BCIR-1M60QdKtJ2_bGTN_HFTpSJAYUeVVKBX8",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"oldPassword\": \"Password@123\",\r\n  \"newPassword\": \"Password@456\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/change-password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "change-password"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "72421ac1-c161-4d3b-963d-cc60a3918fb1"
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Admin Login",
+          "id": "ea3fd203-7d46-4ae9-a5e0-ca2e3b807454",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg0OTI3NTY0LCJleHAiOjE3ODU1MzIzNjR9.08uowxRjkNj8SZepRwCeUR_JFRz5fFHNnpu1J3tESUA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg0OTI3NTY0LCJleHAiOjE3ODU1MzIzNjR9.08uowxRjkNj8SZepRwCeUR_JFRz5fFHNnpu1J3tESUA",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"admin@gmail.com\",\r\n  \"password\": \"Admin@123\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Dashboard",
+          "id": "98461c09-aaa6-4bed-a488-4628622e22d6",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg0OTI3NTY0LCJleHAiOjE3ODU1MzIzNjR9.08uowxRjkNj8SZepRwCeUR_JFRz5fFHNnpu1J3tESUA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "dashboard"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User",
+          "id": "502c7f69-1394-4307-8da3-319ac86d928d",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg0OTI3NTY0LCJleHAiOjE3ODU1MzIzNjR9.08uowxRjkNj8SZepRwCeUR_JFRz5fFHNnpu1J3tESUA",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Store Owner Example1\",\r\n  \"email\": \"owner1@example.com\",\r\n  \"address\": \"Mumbai\",\r\n  \"password\": \"Owner@123\",\r\n  \"role\": \"OWNER\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update User",
+          "id": "3114952f-2b8c-47bd-a331-6a812fbcebed",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg0OTI5MjM5LCJleHAiOjE3ODU1MzQwMzl9.Mshky7ETgoNyLixLPhKkaZxVqsCrFscEaSie0ZAgXvk",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Rahul Kumar Sharma full naman\",\r\n  \"email\": \"owner@example.com\",\r\n  \"address\": \"Mumbai\",\r\n  \"role\": \"OWNER\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "5"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create Store",
+          "id": "5d98887e-2a97-4006-8cdd-e5cb1d179989",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg0OTI5MjM5LCJleHAiOjE3ODU1MzQwMzl9.Mshky7ETgoNyLixLPhKkaZxVqsCrFscEaSie0ZAgXvk",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg0OTI5MjM5LCJleHAiOjE3ODU1MzQwMzl9.Mshky7ETgoNyLixLPhKkaZxVqsCrFscEaSie0ZAgXvk",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Fresh Mart\",\r\n  \"email\": \"freshmart@gmail.com\",\r\n  \"address\": \"Pune\",\r\n  \"ownerId\": 9 //this refer to owner\r\n}\r\n//and token should be of admin only",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Users",
+          "id": "39f04a8f-e8f8-4a45-8a6c-b386395b723a",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg0OTI5MjM5LCJleHAiOjE3ODU1MzQwMzl9.Mshky7ETgoNyLixLPhKkaZxVqsCrFscEaSie0ZAgXvk",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User By ID",
+          "id": "2132b89f-604a-4e62-bf00-1d9ee3ec5e38",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg0OTI5MjM5LCJleHAiOjE3ODU1MzQwMzl9.Mshky7ETgoNyLixLPhKkaZxVqsCrFscEaSie0ZAgXvk",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/users/2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "users",
+                "2"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Stores",
+          "id": "0aad2af4-45ad-40a6-a15b-a39e27105820",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg0OTI5MjM5LCJleHAiOjE3ODU1MzQwMzl9.Mshky7ETgoNyLixLPhKkaZxVqsCrFscEaSie0ZAgXvk",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/admin/stores",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "admin",
+                "stores"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "73ba62e2-7cfc-49b6-8110-2cc504a87cc3"
+    },
+    {
+      "name": "Stores",
+      "item": [
+        {
+          "name": "List Stores",
+          "id": "11691b04-94de-43f6-96cd-f83985f38afa",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Stores",
+          "id": "2426336f-7b0b-4943-a879-b10a22068ae5",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Pagination",
+          "id": "5d65f5da-9087-47d2-92ac-14d81711c12b",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "New Request",
+          "id": "4905a0fb-8262-46c3-8a29-9a7c89baefa9",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "57720fce-360a-4ea0-893f-76bea6c18c43"
+    },
+    {
+      "name": "Ratings",
+      "item": [
+        {
+          "name": "Submit Rating",
+          "id": "bad279ee-1f79-4ece-bc38-cef0cb22ceba",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Rating",
+          "id": "7908f3b2-0079-4321-a3fb-d2990b62b24b",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "46626c7e-ccd4-497f-9770-573786e6da14"
+    },
+    {
+      "name": "Owner",
+      "item": [
+        {
+          "name": "Owner Login",
+          "id": "e45671ea-eb0d-4aab-98ae-bdcd6b7051f5",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwicm9sZSI6IlVTRVIiLCJpYXQiOjE3ODQ5MTE1MTksImV4cCI6MTc4NTUxNjMxOX0.imfhC19QRAkI0eZnB0-JnyTI7bqsInVMO05fM2k2-40",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Niwicm9sZSI6IlVTRVIiLCJpYXQiOjE3ODQ5MTE1MTksImV4cCI6MTc4NTUxNjMxOX0.imfhC19QRAkI0eZnB0-JnyTI7bqsInVMO05fM2k2-40",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"email\": \"owner@example.com\",\r\n  \"password\": \"Password@1\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Dashboard",
+          "id": "6a3a947b-8e9b-47f0-bd8f-89014c6fb9f7",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTU3NDk3LCJleHAiOjE3ODU1NjIyOTd9.RMAr77_Z2PdF-GAwCPGcwrmytBFa5rVK50qwd9XEsBQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owner/dashboard",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "owner",
+                "dashboard"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Ratings",
+          "id": "e9c369a0-b755-4172-9d50-4d9a4b1f06c9",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTU3NDk3LCJleHAiOjE3ODU1NjIyOTd9.RMAr77_Z2PdF-GAwCPGcwrmytBFa5rVK50qwd9XEsBQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owner/ratings",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "owner",
+                "ratings"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search Ratings",
+          "id": "0e3f06f7-8412-4149-9fa3-a695742bee07",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTU3NDk3LCJleHAiOjE3ODU1NjIyOTd9.RMAr77_Z2PdF-GAwCPGcwrmytBFa5rVK50qwd9XEsBQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owner/ratings?search=rahul",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "owner",
+                "ratings"
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "rahul"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Pagination",
+          "id": "0c4827f8-9d1e-41e3-a8e5-f0b9238664c7",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTU3NDk3LCJleHAiOjE3ODU1NjIyOTd9.RMAr77_Z2PdF-GAwCPGcwrmytBFa5rVK50qwd9XEsBQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owner/ratings?page=1&limit=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "owner",
+                "ratings"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Search + Pagination",
+          "id": "85b0f89f-5e65-497e-9d74-57c467fc6cd1",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicm9sZSI6Ik9XTkVSIiwiaWF0IjoxNzg0OTU3NDk3LCJleHAiOjE3ODU1NjIyOTd9.RMAr77_Z2PdF-GAwCPGcwrmytBFa5rVK50qwd9XEsBQ",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/owner/ratings?page=1&limit=5&search=rahul",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "owner",
+                "ratings"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "limit",
+                  "value": "5"
+                },
+                {
+                  "key": "search",
+                  "value": "rahul"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "27eaa794-4af9-427d-8e6e-c6838f1ad9c6"
+    }
+  ]
+}
