@@ -149,6 +149,19 @@ const getAllStores = async () => {
   return await storeRepository.getAllStores();
 };
 
+/**
+ * Get Store By ID
+ */
+const getStoreById = async (id) => {
+  const store = await storeRepository.getStoreById(id);
+
+  if (!store) {
+    throw new Error("Store not found");
+  }
+
+  return store;
+};
+
 const getUserById = async (id) => {
 
   const user = await userRepository.getUserById(id);
@@ -234,4 +247,5 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
+  getStoreById,
 };

@@ -1,0 +1,72 @@
+{
+  "info": {
+    "_postman_id": "6582f645-ed28-4ac6-9f45-3a466a6e73aa",
+    "name": "Store Rating Platform API- Production",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Authentication",
+      "item": [
+        {
+          "name": "Signup",
+          "id": "a9c8a09f-353a-44b5-90c5-00b7467cd80c",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Login",
+          "id": "eb6d470b-3161-4b54-98ec-e59b98eedade",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "e1b514b0-9a81-4b48-b7c4-e677e989a3d7"
+    },
+    {
+      "name": "Admin",
+      "item": [
+        {
+          "name": "Admin Login",
+          "id": "b98eddba-dc9d-47be-960a-db9ca8587305",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        }
+      ],
+      "id": "f4b41be7-979b-4c05-98f5-b7ef15d7dcca"
+    },
+    {
+      "name": "Stores",
+      "item": [],
+      "id": "c57ead19-c463-4708-a256-79d4ec1dc0fa"
+    },
+    {
+      "name": "Ratings",
+      "item": [],
+      "id": "a8aea95f-56ef-4455-baec-f38b83870e54"
+    },
+    {
+      "name": "Owner",
+      "item": [],
+      "id": "2dbafd64-80d0-4a06-a469-0687dda6815b"
+    }
+  ]
+}

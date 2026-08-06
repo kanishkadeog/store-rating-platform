@@ -72,6 +72,22 @@ const getAllStores = async (req, res, next) => {
   }
 };
 
+const getStoreById = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    const store = await adminService.getStoreById(id);
+
+    res.status(200).json({
+      success: true,
+      message: "Store fetched successfully",
+      data: store,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getUserById = async (req, res, next) => {
   try {
     const { id } = req.params;
@@ -132,4 +148,5 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
+  getStoreById,
 };

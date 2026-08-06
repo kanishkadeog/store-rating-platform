@@ -23,3 +23,61 @@ query for change password:
     "oldPassword":"Password@1",
     "newPassword":"NewPassword@1"
 }
+
+=====================================================
+.env.example
+
+---
+//store-rating-platform/backend/.env.example
+
+# ==========================
+# Server
+# ==========================
+PORT=5000
+NODE_ENV=development
+
+# ==========================
+# Database
+# ==========================
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=store_rating_platform
+DB_USER=root
+DB_PASSWORD=your_mysql_password
+
+# ==========================
+# JWT
+# ==========================
+JWT_SECRET=your_super_secret_key
+JWT_EXPIRES_IN=7d
+
+# ==========================
+# Admin Seed
+# ==========================
+ADMIN_NAME=System Administrator
+ADMIN_EMAIL=admin@gmail.com
+ADMIN_PASSWORD=Admin@123
+ADMIN_ADDRESS=Pune, Maharashtra
+
+#============================
+
+# ==========================
+# OWNER Seed
+# ==========================
+OWNER_NAME=Rahul Kumar Sharma full naman
+OWNER_EMAIL=owner@example.com
+OWNER_PASSWORD=Password@1
+OWNER_ADDRESS=Mumbai
+
+#============================
+
+# ==========================
+# USER Seed
+# ==========================
+USER_NAME=Rahul Sharma Kumarayan
+USER_EMAIL=rahul@gmail.com
+USER_PASSWORD=Password@456
+USER_ADDRESS=Pune
+
+-----------------
+http://localhost:5000/api

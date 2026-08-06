@@ -109,6 +109,21 @@ const getStores = async (query) => {
   };
 };
 
+/**
+ * Get store by ID
+ */
+const getStoreById = async (id) => {
+  return await Store.findByPk(id, {
+    include: [
+      {
+        model: User,
+        as: "owner",
+        attributes: ["id", "name", "email"],
+      },
+    ],
+  });
+};
+
 module.exports = {
   createStore,
   findStoreByEmail,
@@ -116,4 +131,5 @@ module.exports = {
   getAllStores,
   hasStoresByOwner,
   getStores,
+  getStoreById,
 };

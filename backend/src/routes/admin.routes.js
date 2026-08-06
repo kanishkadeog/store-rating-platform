@@ -70,6 +70,15 @@ router.get(
   adminController.getAllStores
 );
 
+// Get Store By ID API
+router.get(
+  "/stores/:id",
+  authMiddleware,
+  authorize(ROLES.ADMIN),
+  adminController.getStoreById
+);
+
+
 // Create User API
 router.post(
   "/users",

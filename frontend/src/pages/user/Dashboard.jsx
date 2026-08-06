@@ -1,1 +1,0 @@
-//store-rating-platform/frontend/src/pages/user/Dashboard.jsx
