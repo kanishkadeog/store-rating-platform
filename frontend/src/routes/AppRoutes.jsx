@@ -19,6 +19,10 @@ import StoreDetails from "../pages/admin/StoreDetails";
 
 import CreateUser from "../pages/admin/CreateUser";
 
+import CreateStore from "../pages/admin/CreateStore";
+
+import Ratings from "../pages/owner/Ratings";
+
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 
@@ -101,6 +105,15 @@ function AppRoutes() {
 />
 
 <Route
+  path="/admin/stores/create"
+  element={
+    <ProtectedRoute allowedRoles={["ADMIN"]}>
+      <CreateStore />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
   path="/admin/stores/:id"
   element={
     <ProtectedRoute allowedRoles={["ADMIN"]}>
@@ -128,6 +141,16 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+  path="/owner/ratings"
+  element={
+    <ProtectedRoute allowedRoles={["OWNER"]}>
+      <Ratings />
+    </ProtectedRoute>
+  }
+/>
+
       </Routes>
     </BrowserRouter>
   );

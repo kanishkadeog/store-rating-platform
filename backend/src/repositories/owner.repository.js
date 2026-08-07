@@ -69,7 +69,12 @@ const getStoreRatings = async (ownerId, query) => {
       storeId: store.id,
     },
 
-    attributes: ["rating"],
+    // attributes: ["rating"],
+    attributes: [
+  "id",
+  "rating",
+  "createdAt",
+],
 
     include: [
       {

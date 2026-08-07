@@ -40,12 +40,17 @@ const getStoreRatings = async (ownerId, query) => {
     currentPage: result.currentPage,
     totalPages: result.totalPages,
 
-    ratings: result.ratings.map((item) => ({
-      userId: item.user.id,
-      name: item.user.name,
-      email: item.user.email,
-      rating: item.rating,
-    })),
+   ratings: result.ratings.map((item) => ({
+  id: item.id,
+  rating: item.rating,
+  createdAt: item.createdAt,
+
+  user: {
+    id: item.user.id,
+    name: item.user.name,
+    email: item.user.email,
+  },
+})),
   };
 };
 

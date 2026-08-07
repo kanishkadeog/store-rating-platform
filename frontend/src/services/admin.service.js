@@ -60,3 +60,21 @@ export const createUser = async (data) => {
 
   return response.data;
 };
+
+/**
+ * Get all owners
+ */
+export const getAllOwners = async () => {
+  const response = await api.get("/admin/owners");
+
+  return response.data;
+};
+
+/**
+ * Create Store
+ */
+export const createStore = async (data) => {
+  const response = await api.post("/admin/stores", data);
+
+  return response.data;
+};

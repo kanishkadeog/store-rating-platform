@@ -27,7 +27,7 @@ function Sidebar() {
     },
     {
       text: "Create Store",
-      path: "/admin/create-store",
+      path: "/admin/stores/create",
     },
   ];
 
@@ -40,7 +40,7 @@ function Sidebar() {
         "& .MuiDrawer-paper": {
           width: drawerWidth,
           boxSizing: "border-box",
-          marginTop: "64px",
+          marginTop: "74px",
         },
       }}
     >

@@ -3,22 +3,34 @@
 import { Box } from "@mui/material";
 
 import Header from "./Header";
+
 import Sidebar from "./Sidebar";
+import OwnerSidebar from "./OwnerSidebar";
+
+import { useAuth } from "../../context/AuthContext";
+
+const drawerWidth = 100;
+
 
 function DashboardLayout({ children }) {
+  const { user } = useAuth();
+
   return (
     <>
       <Header />
 
       <Box sx={{ display: "flex" }}>
-        <Sidebar />
+        
+        {user?.role === "ADMIN" && <Sidebar />}
+
+        {user?.role === "OWNER" && <OwnerSidebar />}
 
         <Box
           component="main"
           sx={{
             flexGrow: 1,
             p: 3,
-            ml: "240px",
+             ml: `${drawerWidth}px`,
             mt: "64px",
           }}
         >
