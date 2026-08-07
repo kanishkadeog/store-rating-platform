@@ -27,7 +27,7 @@ router.use("/ratings", ratingRoutes);
 
 router.use("/owner", ownerRoutes);
 
-router.use("/api/user", userRoutes);
+router.use("/user", userRoutes);
 
 router.use("/test",testRoutes);
 
