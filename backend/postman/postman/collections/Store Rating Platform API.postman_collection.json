@@ -769,6 +769,30 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "update ratings",
+          "id": "f3865f49-ecc6-4825-9476-349cc6defb0e",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "owner login new",
+          "id": "53948646-ac0a-4f7d-882f-b930158dc02c",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
         }
       ],
       "id": "27eaa794-4af9-427d-8e6e-c6838f1ad9c6"

@@ -1,6 +1,17 @@
 // store-rating-platform/backend/src/repositories/user.repository.js
 
-const { User } = require("../models");
+const {
+  User,
+  Store,
+  Rating,
+} = require("../models");
+
+const {
+  Op,
+  fn,
+  col,
+  literal,
+} = require("sequelize");
 
 // Find user by ID (used internally)
 const findUserById = async (id) => {
@@ -80,6 +91,89 @@ const deleteUser = async (id) => {
   return true;
 };
 
+/**
+ * Get all stores for normal users
+ */
+const getAllStores = async (userId, query) => {
+  const {
+    page = 1,
+    limit = 10,
+    search = "",
+  } = query;
+
+  const offset =
+    (Number(page) - 1) * Number(limit);
+
+  const { rows, count } =
+    await Store.findAndCountAll({
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+          {
+            address: {
+              [Op.like]: `%${search}%`,
+            },
+          },
+        ],
+      },
+
+      attributes: [
+        "id",
+        "name",
+        "email",
+        "address",
+
+        [
+          fn(
+            "AVG",
+            col("ratings.rating")
+          ),
+          "averageRating",
+        ],
+      ],
+
+      include: [
+        {
+          model: Rating,
+          as: "ratings",
+          attributes: [],
+          required: false,
+        },
+      ],
+
+      group: ["Store.id"],
+
+      limit: Number(limit),
+
+      offset,
+
+      order: [["createdAt", "DESC"]],
+
+      subQuery: false,
+    });
+
+  return {
+    total: Array.isArray(count)
+      ? count.length
+      : count,
+
+    currentPage: Number(page),
+
+    totalPages: Math.ceil(
+      (Array.isArray(count)
+        ? count.length
+        : count) / Number(limit)
+    ),
+
+    stores: rows,
+  };
+};
+
+
 module.exports = {
   findUserById,
   findUserByEmail,
@@ -88,4 +182,6 @@ module.exports = {
   getAllOwners,
   updateUser,
   deleteUser,
+    getAllStores,
+
 };

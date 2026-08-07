@@ -13,6 +13,7 @@ const ratingRoutes = require("./rating.routes");
 
 const ownerRoutes = require("./owner.routes");
 
+const userRoutes = require("./user.routes");
 
 const testRoutes = require("./test.routes");
 
@@ -26,6 +27,7 @@ router.use("/ratings", ratingRoutes);
 
 router.use("/owner", ownerRoutes);
 
+router.use("/api/user", userRoutes);
 
 router.use("/test",testRoutes);
 
