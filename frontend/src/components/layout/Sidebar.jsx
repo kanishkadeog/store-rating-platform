@@ -23,7 +23,7 @@ function Sidebar() {
     },
     {
       text: "Create User",
-      path: "/admin/create-user",
+      path: "/admin/users/create",
     },
     {
       text: "Create Store",

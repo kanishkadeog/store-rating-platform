@@ -35,6 +35,25 @@ const getAllUsers = async () => {
   });
 };
 
+/**
+ * Get all users with OWNER role
+ */
+const getAllOwners = async () => {
+  return await User.findAll({
+    where: {
+      role: "OWNER",
+    },
+
+    attributes: [
+      "id",
+      "name",
+      "email",
+    ],
+
+    order: [["name", "ASC"]],
+  });
+};
+
 // Update user by ID
 const updateUser = async (id, data) => {
   const user = await User.findByPk(id);
@@ -66,6 +85,7 @@ module.exports = {
   findUserByEmail,
   getUserById,
   getAllUsers,
+  getAllOwners,
   updateUser,
   deleteUser,
 };

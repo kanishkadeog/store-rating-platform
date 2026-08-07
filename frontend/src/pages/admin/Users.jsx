@@ -8,10 +8,15 @@ import {
 } from "@mui/material";
 import { toast } from "react-toastify";
 
+import { Button } from "@mui/material";
+import { Add } from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import UserTable from "../../components/users/UserTable";
 import UserSearch from "../../components/users/UserSearch";
 import Pagination from "@mui/material/Pagination";
+
 
 import DeleteUserDialog from "../../components/users/DeleteUserDialog";
 
@@ -31,8 +36,9 @@ function Users() {
 
   const [openDelete, setOpenDelete] = useState(false);
 
-const [selectedUserId, setSelectedUserId] =
-  useState(null);
+const [selectedUserId, setSelectedUserId] =useState(null);
+
+const navigate = useNavigate();
 
 const rowsPerPage = 5;
 
@@ -129,12 +135,33 @@ const paginatedUsers = filteredUsers.slice(
       </Typography>
 
       <>
-  <UserSearch
-    searchTerm={searchTerm}
-    setSearchTerm={setSearchTerm}
-    setPage={setPage}
 
-  />
+<Box
+  display="flex"
+  justifyContent="space-between"
+  alignItems="center"
+  mb={2}
+  gap={2}
+>
+  <Box flex={1}>
+    <UserSearch
+      searchTerm={searchTerm}
+      setSearchTerm={setSearchTerm}
+      setPage={setPage}
+    />
+  </Box>
+
+  <Button
+    variant="contained"
+    startIcon={<Add />}
+    onClick={() =>
+      navigate("/admin/users/create")
+    }
+    sx={{ height: 56 }}
+  >
+    Create User
+  </Button>
+</Box>
 
   <UserTable
   users={paginatedUsers}

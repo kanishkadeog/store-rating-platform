@@ -10,3 +10,12 @@ export const getAllStores = async () => {
 
   return response.data;
 };
+
+/**
+ * Get Store By ID
+ */
+export const getStoreById = async (id) => {
+  const response = await api.get(`/admin/stores/${id}`);
+
+  return response.data;
+};

@@ -438,8 +438,20 @@
           "response": []
         },
         {
-          "name": "New Request",
+          "name": "store by id",
           "id": "471a2744-c438-4e85-a05e-161ee736a5cd",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "owner list",
+          "id": "63ea8626-ed8e-4163-9cb2-91c835ac3bbf",
           "request": {
             "method": "GET",
             "header": [],

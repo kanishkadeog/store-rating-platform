@@ -145,6 +145,13 @@ const getAllUsers = async () => {
   return await userRepository.getAllUsers();
 };
 
+/**
+ * Get all owners
+ */
+const getAllOwners = async () => {
+  return await userRepository.getAllOwners();
+};
+
 const getAllStores = async () => {
   return await storeRepository.getAllStores();
 };
@@ -248,4 +255,5 @@ module.exports = {
   updateUser,
   deleteUser,
   getStoreById,
+  getAllOwners,
 };

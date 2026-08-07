@@ -36,6 +36,14 @@ router.get(
   adminController.getAllUsers
 );
 
+// Get All Owners API
+router.get(
+  "/owners",
+  authMiddleware,
+  authorize(ROLES.ADMIN),
+  adminController.getAllOwners
+);
+
 // Get User By ID API
 router.get(
   "/users/:id",

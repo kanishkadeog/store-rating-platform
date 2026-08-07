@@ -58,6 +58,20 @@ const getAllUsers = async (req, res, next) => {
   }
 };
 
+const getAllOwners = async (req, res, next) => {
+  try {
+    const owners = await adminService.getAllOwners();
+
+    res.status(200).json({
+      success: true,
+      message: "Owners fetched successfully",
+      data: owners,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const getAllStores = async (req, res, next) => {
   try {
     const stores = await adminService.getAllStores();
@@ -144,9 +158,10 @@ module.exports = {
   createUser,
   createStore,
   getAllUsers,
+  getAllOwners,
   getAllStores,
   getUserById,
+  getStoreById,
   updateUser,
   deleteUser,
-  getStoreById,
 };

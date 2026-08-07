@@ -8,9 +8,17 @@ import {
   TableRow,
   TableCell,
   TableContainer,
+  IconButton,
 } from "@mui/material";
 
+import { Visibility } from "@mui/icons-material";
+
+import { useNavigate } from "react-router-dom";
+
 function StoreTable({ stores }) {
+   const navigate = useNavigate();
+
+
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -22,6 +30,7 @@ function StoreTable({ stores }) {
             <TableCell><b>Address</b></TableCell>
             <TableCell><b>Owner</b></TableCell>
             <TableCell><b>Average Rating</b></TableCell>
+            <TableCell><b>Actions</b></TableCell>
           </TableRow>
         </TableHead>
 
@@ -31,10 +40,10 @@ function StoreTable({ stores }) {
 
     <TableRow>
 
-      <TableCell
-        colSpan={5}
-        align="center"
-      >
+   <TableCell
+     colSpan={6}
+     align="center"
+    >
         No stores found
       </TableCell>
 
@@ -59,6 +68,17 @@ function StoreTable({ stores }) {
         <TableCell>
           ⭐ {store.averageRating}
         </TableCell>
+
+        <TableCell>
+  <IconButton
+    color="primary"
+    onClick={() =>
+      navigate(`/admin/stores/${store.id}`)
+    }
+  >
+    <Visibility />
+  </IconButton>
+</TableCell>
 
       </TableRow>
 

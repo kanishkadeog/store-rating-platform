@@ -51,3 +51,12 @@ export const deleteUser = async (id) => {
 
   return response.data;
 };
+
+/**
+ * Create User
+ */
+export const createUser = async (data) => {
+  const response = await api.post("/admin/users", data);
+
+  return response.data;
+};
