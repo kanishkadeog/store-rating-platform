@@ -37,10 +37,14 @@ const authMiddleware = async (
         const decoded =
             verifyToken(token);
 
+console.log("Decoded Token:", decoded);
+
         const user =
             await User.findByPk(
                 decoded.id
             );
+
+            console.log("User Found:", user);
 
         if (!user) {
 

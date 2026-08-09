@@ -3,7 +3,7 @@
 import { Drawer, List, ListItemButton, ListItemText } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const drawerWidth = 240;
+const drawerWidth = 220;
 
 function Sidebar() {
   const navigate = useNavigate();

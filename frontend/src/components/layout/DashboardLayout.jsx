@@ -6,6 +6,7 @@ import Header from "./Header";
 
 import Sidebar from "./Sidebar";
 import OwnerSidebar from "./OwnerSidebar";
+import UserSidebar from "./UserSidebar";
 
 import { useAuth } from "../../context/AuthContext";
 
@@ -25,6 +26,9 @@ function DashboardLayout({ children }) {
 
         {user?.role === "OWNER" && <OwnerSidebar />}
 
+        {user?.role === "USER" && <UserSidebar />}
+
+
         <Box
           component="main"
           sx={{
@@ -32,6 +36,7 @@ function DashboardLayout({ children }) {
             p: 3,
              ml: `${drawerWidth}px`,
             mt: "64px",
+            mr: "64px",
           }}
         >
           {children}

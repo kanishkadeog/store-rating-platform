@@ -42,3 +42,16 @@ export const deleteUser = async (id) => {
 
   return response.data;
 };
+
+
+
+/**
+ * Get all stores
+ */
+export const getAllStores = async (params) => {
+  const response = await api.get("/user/stores", {
+    params,
+  });
+
+  return response.data;
+};

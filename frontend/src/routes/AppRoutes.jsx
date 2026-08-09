@@ -26,6 +26,8 @@ import Ratings from "../pages/owner/Ratings";
 import ProtectedRoute from "./ProtectedRoute";
 import PublicRoute from "./PublicRoute";
 
+import MyRatings from "../pages/user/MyRatings";
+
 function AppRoutes() {
   return (
     <BrowserRouter>
@@ -131,6 +133,16 @@ function AppRoutes() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+  path="/user/ratings"
+  element={
+    <ProtectedRoute allowedRoles={["USER"]}>
+      <MyRatings />
+    </ProtectedRoute>
+  }
+/>
+
 
         {/* Owner Routes */}
         <Route

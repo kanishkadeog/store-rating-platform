@@ -556,6 +556,18 @@
             }
           },
           "response": []
+        },
+        {
+          "name": "rating",
+          "id": "479b6cbe-7996-4a0b-b71e-57b2c76b4f72",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": ""
+            }
+          },
+          "response": []
         }
       ],
       "id": "46626c7e-ccd4-497f-9770-573786e6da14"
