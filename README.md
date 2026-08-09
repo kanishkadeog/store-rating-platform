@@ -203,34 +203,36 @@ Sequelize ORM
    ▼
 MySQL Database
 
-### 🛠️ Technology Stack
-## Backend
+--- 
+
+## 🛠️ Technology Stack
+### Backend
 Node.js
 Express.js
 JavaScript
-## Database
+### Database
 MySQL
 Sequelize ORM
-## Authentication
+### Authentication
 JWT
 bcrypt
-## Validation
+### Validation
 express-validator
-## Security
+### Security
 Helmet
 CORS
 JWT authorization
-## Middleware / Utilities
+### Middleware / Utilities
 Morgan
 Compression
 Cookie Parser
-## Development
+### Development
 Nodemon
 Postman
 Git
 GitHub
 
-### Architecture Responsibilities
+## Architecture Responsibilities
 
 Layer	Responsibility
 Routes	Define API endpoints
