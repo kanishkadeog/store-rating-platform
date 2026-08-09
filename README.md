@@ -174,3 +174,72 @@ Rating Saved
 Update Rating
     ↓
 Updated Rating
+
+```
+### 🧱 Architecture
+
+The backend follows a layered architecture designed to keep business logic separated from HTTP handling and database operations.
+
+Request
+   │
+   ▼
+Routes
+   │
+   ▼
+Middleware
+   │
+   ▼
+Controller
+   │
+   ▼
+Service
+   │
+   ▼
+Repository
+   │
+   ▼
+Sequelize ORM
+   │
+   ▼
+MySQL Database
+
+### 🛠️ Technology Stack
+## Backend
+Node.js
+Express.js
+JavaScript
+## Database
+MySQL
+Sequelize ORM
+## Authentication
+JWT
+bcrypt
+## Validation
+express-validator
+## Security
+Helmet
+CORS
+JWT authorization
+## Middleware / Utilities
+Morgan
+Compression
+Cookie Parser
+## Development
+Nodemon
+Postman
+Git
+GitHub
+
+### Architecture Responsibilities
+
+Layer	Responsibility
+Routes	Define API endpoints
+Middleware	Authentication, authorization, validation
+Controllers	Handle HTTP requests/responses
+Services	Business logic
+Repositories	Database operations
+Models	Sequelize database models
+Validators	Request validation
+Utils	Reusable utilities
+Constants	Roles and application constants
+Config	Database/environment configuration
