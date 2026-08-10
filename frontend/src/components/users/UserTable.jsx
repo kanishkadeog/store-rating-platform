@@ -10,7 +10,7 @@ import {
     TableContainer,
     IconButton,
     Tooltip,
-    TableSortLabel,
+    Box,
 } from "@mui/material";
 
 import {
@@ -30,40 +30,120 @@ function UserTable({
 }) {
     const navigate = useNavigate();
 
-    // --------------------------------------------------
-    // Common styling for sorting headers
-    // --------------------------------------------------
+    // =========================================================
+    // Sorting Header Component
+    // =========================================================
 
-    const getSortLabelStyles = (field) => {
+    const SortHeader = ({ field, children }) => {
+
         const isActive = sortBy === field;
 
-        return {
-            fontWeight: isActive ? 700 : 600,
+        // Active column:
+        // ASC  → ↑
+        // DESC → ↓
+        //
+        // Inactive column:
+        // ↕
+        const sortIcon = !isActive
+            ? "↕"
+            : sortOrder === "ASC"
+                ? "↑"
+                : "↓";
 
-            color: isActive
-                ? "#111827"
-                : "#374151",
+        return (
+            <Box
+                component="button"
+                onClick={() => onSort(field)}
+                sx={{
+                    // Remove default button styling
+                    background: "none",
+                    border: "none",
+                    padding: 0,
 
-            "& .MuiTableSortLabel-icon": {
-                opacity: 1,
-                color: isActive
-                    ? "#111827 !important"
-                    : "#6B7280 !important",
-            },
+                    // Cursor
+                    cursor: "pointer",
 
-            "&:hover": {
-                color: "#111827",
+                    // Layout
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "6px",
 
-                "& .MuiTableSortLabel-icon": {
-                    color: "#111827 !important",
-                    opacity: 1,
-                },
-            },
-        };
+                    // Text
+                    fontFamily: "inherit",
+                    fontSize: "inherit",
+
+                    fontWeight: isActive
+                        ? 700
+                        : 600,
+
+                    color: isActive
+                        ? "#111827"
+                        : "#374151",
+
+                    // Prevent text selection while clicking
+                    userSelect: "none",
+
+                    // Smooth transition
+                    transition:
+                        "all 0.15s ease",
+
+                    "&:hover": {
+                        color: "#111827",
+
+                        transform:
+                            "translateY(-1px)",
+                    },
+                }}
+            >
+
+                {/* Column name */}
+
+                <span>
+                    {children}
+                </span>
+
+
+                {/* Sorting icon */}
+
+                <Box
+                    component="span"
+                    sx={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+
+                        minWidth: "20px",
+
+                        fontSize: isActive
+                            ? "18px"
+                            : "17px",
+
+                        fontWeight: isActive
+                            ? 800
+                            : 500,
+
+                        color: isActive
+                            ? "#111827"
+                            : "#6B7280",
+
+                        lineHeight: 1,
+
+                        transition:
+                            "all 0.15s ease",
+                    }}
+                >
+                    {sortIcon}
+                </Box>
+
+            </Box>
+        );
     };
 
+
     return (
-        <TableContainer component={Paper}>
+        <TableContainer
+            component={Paper}
+        >
 
             <Table>
 
@@ -81,20 +161,11 @@ function UserTable({
 
                         <TableCell>
 
-                            <TableSortLabel
-                                active={sortBy === "name"}
-                                direction={
-                                    sortBy === "name"
-                                        ? sortOrder.toLowerCase()
-                                        : "asc"
-                                }
-                                onClick={() =>
-                                    onSort("name")
-                                }
-                                sx={getSortLabelStyles("name")}
+                            <SortHeader
+                                field="name"
                             >
                                 Name
-                            </TableSortLabel>
+                            </SortHeader>
 
                         </TableCell>
 
@@ -105,20 +176,11 @@ function UserTable({
 
                         <TableCell>
 
-                            <TableSortLabel
-                                active={sortBy === "email"}
-                                direction={
-                                    sortBy === "email"
-                                        ? sortOrder.toLowerCase()
-                                        : "asc"
-                                }
-                                onClick={() =>
-                                    onSort("email")
-                                }
-                                sx={getSortLabelStyles("email")}
+                            <SortHeader
+                                field="email"
                             >
                                 Email
-                            </TableSortLabel>
+                            </SortHeader>
 
                         </TableCell>
 
@@ -129,20 +191,11 @@ function UserTable({
 
                         <TableCell>
 
-                            <TableSortLabel
-                                active={sortBy === "address"}
-                                direction={
-                                    sortBy === "address"
-                                        ? sortOrder.toLowerCase()
-                                        : "asc"
-                                }
-                                onClick={() =>
-                                    onSort("address")
-                                }
-                                sx={getSortLabelStyles("address")}
+                            <SortHeader
+                                field="address"
                             >
                                 Address
-                            </TableSortLabel>
+                            </SortHeader>
 
                         </TableCell>
 
@@ -153,20 +206,11 @@ function UserTable({
 
                         <TableCell>
 
-                            <TableSortLabel
-                                active={sortBy === "role"}
-                                direction={
-                                    sortBy === "role"
-                                        ? sortOrder.toLowerCase()
-                                        : "asc"
-                                }
-                                onClick={() =>
-                                    onSort("role")
-                                }
-                                sx={getSortLabelStyles("role")}
+                            <SortHeader
+                                field="role"
                             >
                                 Role
-                            </TableSortLabel>
+                            </SortHeader>
 
                         </TableCell>
 
@@ -177,7 +221,14 @@ function UserTable({
 
                         <TableCell align="center">
 
-                            <b>Actions</b>
+                            <Box
+                                component="span"
+                                sx={{
+                                    fontWeight: 700,
+                                }}
+                            >
+                                Actions
+                            </Box>
 
                         </TableCell>
 
@@ -214,35 +265,45 @@ function UserTable({
                                 hover
                             >
 
-                                {/* NAME */}
+                                {/* =========================
+                                    NAME
+                                ========================== */}
 
                                 <TableCell>
                                     {user.name}
                                 </TableCell>
 
 
-                                {/* EMAIL */}
+                                {/* =========================
+                                    EMAIL
+                                ========================== */}
 
                                 <TableCell>
                                     {user.email}
                                 </TableCell>
 
 
-                                {/* ADDRESS */}
+                                {/* =========================
+                                    ADDRESS
+                                ========================== */}
 
                                 <TableCell>
                                     {user.address}
                                 </TableCell>
 
 
-                                {/* ROLE */}
+                                {/* =========================
+                                    ROLE
+                                ========================== */}
 
                                 <TableCell>
                                     {user.role}
                                 </TableCell>
 
 
-                                {/* ACTIONS */}
+                                {/* =========================
+                                    ACTIONS
+                                ========================== */}
 
                                 <TableCell align="center">
 
