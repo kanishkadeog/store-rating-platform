@@ -401,37 +401,47 @@ Contains database and environment configuration.
 - React.js
 - Vite
 - JavaScript
-Material UI
-React Router
-Axios
-React Hook Form
-React Toastify
-Backend
-Node.js
-Express.js
-JavaScript
-REST API
-Database
-MySQL
-Sequelize ORM
-Authentication & Security
-JWT
-bcrypt
-Helmet
-CORS
-Cookie Parser
-Validation
-express-validator
-Development Tools
-Git
-GitHub
-Postman
-Nodemon
-VS Code
-Deployment
-Vercel
-Render
-📂 Project Structure
+- Material UI
+- React Router
+- Axios
+- React Hook Form
+- React Toastify
+
+### Backend
+- Node.js
+- Express.js
+- JavaScript
+- REST API
+  
+### Database
+- MySQL
+- Sequelize ORM
+
+### Authentication & Security
+- JWT
+- bcrypt
+- Helmet
+- CORS
+- Cookie Parser
+
+### Validation
+- express-validator
+
+### Development Tools
+- Git
+- GitHub
+- Postman
+- Nodemon
+- VS Code
+
+### Deployment
+- Vercel
+- Render
+  
+---
+
+# 📂 Project Structure
+```
 store-rating-platform/
 │
 ├── backend/
@@ -468,6 +478,166 @@ store-rating-platform/
 │   └── vite.config.js
 │
 └── README.md
+```
+---
+
+# 🔌 REST API
+
+Base URL:
+```
+https://store-rating-platform-e2h6.onrender.com/api
+```
+
+### Authentication APIs
+Signup:
+```
+POST /auth/signup
+```
+Login:
+```
+POST /auth/login
+```
+Change Password:
+```
+POST /auth/change-password
+```
+
+### Admin APIs
+Dashboard:
+```
+GET /admin/dashboard
+```
+Create User:
+```
+POST /admin/users
+```
+Get Users:
+```
+GET /admin/users
+```
+Get User:
+```
+GET /admin/users/:id
+```
+Update User:
+```
+PUT /admin/users/:id
+```
+Create Store:
+```
+POST /admin/stores
+```
+Get Stores:
+```
+GET /admin/stores
+```
+### User APIs
+Get Stores:
+```
+GET /user/stores
+```
+Supports query parameters such as:
+```
+?page=1
+&limit=5
+&search=mart
+&sortBy=name
+&sortOrder=asc
+```
+Get My Ratings:
+```
+GET /ratings/my
+```
+Create Rating:
+```
+POST /ratings
+```
+Update Rating:
+```
+PUT /ratings/:storeId
+```
+
+### Store Owner APIs
+Owner Dashboard:
+```
+GET /owner/dashboard
+```
+Owner Ratings:
+```
+GET /owner/ratings
+```
+Health Check:
+```
+GET /health
+```
+
+Example response:
+```
+{
+  "success": true,
+  "message": "API Running"
+}
+```
+---
+
+# 🗄️ Database Design
+
+The application uses MySQL with Sequelize ORM.
+
+The database is organized around the main entities:
+```
+Users
+   │
+   ├───────────────┐
+   │               │
+   ▼               ▼
+Stores          Ratings
+   │               │
+   └───────┬───────┘
+           │
+           ▼
+        Rating
+```
+Main relationships
+- A user can submit multiple ratings.
+- A store can receive multiple ratings.
+- A user can rate a particular store only once.
+- A store can have an assigned store owner.
+- Ratings belong to both a user and a store.
+
+---
+
+# 🔐 Security Implementation
+
+Security measures implemented include:
+
+JWT Authentication
+
+Protected endpoints require a valid JWT.
+
+Authorization: Bearer <token>
+Role-Based Authorization
+
+API access is restricted according to role.
+
+ADMIN
+USER
+OWNER
+Password Security
+
+Passwords are hashed using bcrypt rather than being stored in plain text.
+
+Helmet
+
+HTTP security headers are configured using Helmet.
+
+CORS
+
+Cross-origin requests are controlled through CORS configuration.
+
+Input Validation
+
+Incoming requests are validated before reaching business logic.
 
 
 
