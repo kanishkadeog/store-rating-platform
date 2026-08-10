@@ -32,11 +32,13 @@ function Users() {
    // Search State
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [page, setPage] = useState(1);
-
-  // Sorting
+   // Sorting
 const [sortBy, setSortBy] = useState("createdAt");
 const [sortOrder, setSortOrder] = useState("DESC");
+
+  const [page, setPage] = useState(1);
+
+ 
 
   const [openDelete, setOpenDelete] = useState(false);
 

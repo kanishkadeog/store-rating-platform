@@ -5,10 +5,12 @@ import api from "../api/axios";
 /**
  * Get all users
  */
-export const getAllUsers = async () => {
-  const response = await api.get("/admin/users");
+export const getAllUsers = async (params = {}) => {
+    const response = await api.get("/admin/users", {
+        params,
+    });
 
-  return response.data;
+    return response.data;
 };
 
 /**
