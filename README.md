@@ -1,9 +1,12 @@
 
 # ⭐ Store Rating Platform
 
-A full-stack role-based **Store Rating Platform** where users can discover stores, submit ratings from 1–5 stars, update their ratings, and view their rating history.
+A production-ready full-stack **Store Rating Platform** built with **React.js, Node.js, Express.js, MySQL, and Sequelize ORM**.
 
-The platform provides dedicated dashboards for **Administrators, Store Owners, and Normal Users**, with secure JWT authentication, role-based authorization, RESTful APIs, MySQL database integration, pagination, search, rating management, and production deployment.
+The application allows users to discover registered stores, submit ratings from **1 to 5 stars**, and update their ratings. It provides dedicated role-based dashboards for **System Administrators, Normal Users, and Store Owners**.
+
+The project follows a layered backend architecture with secure JWT authentication, role-based authorization, request validation, pagination, searching, sorting, rating management, and production deployment.
+
 
 ---
 
@@ -23,11 +26,15 @@ https://store-rating-platform-e2h6.onrender.com/api/health
 
 ## 📌 Project Overview
 
-The **Store Rating Platform** is designed to solve a simple but practical problem:
+The Store Rating Platform is a role-based web application designed to provide a centralized platform where users can:
 
-> Allow users to discover stores and provide ratings while giving administrators and store owners useful insights into store performance.
+- Browse registered stores
+- Search stores
+- View store ratings
+- Submit ratings
+- Modify previously submitted ratings
 
-The application follows a **role-based architecture** with three different user experiences:
+The system also provides administrative and store-owner functionality.
 
 ### 👨‍💼 Administrator
 
