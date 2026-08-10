@@ -30,20 +30,54 @@ function UserTable({
 }) {
     const navigate = useNavigate();
 
+    // --------------------------------------------------
+    // Common styling for sorting headers
+    // --------------------------------------------------
+
+    const getSortLabelStyles = (field) => {
+        const isActive = sortBy === field;
+
+        return {
+            fontWeight: isActive ? 700 : 600,
+
+            color: isActive
+                ? "#111827"
+                : "#374151",
+
+            "& .MuiTableSortLabel-icon": {
+                opacity: 1,
+                color: isActive
+                    ? "#111827 !important"
+                    : "#6B7280 !important",
+            },
+
+            "&:hover": {
+                color: "#111827",
+
+                "& .MuiTableSortLabel-icon": {
+                    color: "#111827 !important",
+                    opacity: 1,
+                },
+            },
+        };
+    };
+
     return (
         <TableContainer component={Paper}>
 
             <Table>
 
-                {/* =========================
+                {/* =================================================
                     TABLE HEADER
-                ========================== */}
+                ================================================== */}
 
                 <TableHead>
 
                     <TableRow>
 
-                        {/* NAME */}
+                        {/* =========================
+                            NAME
+                        ========================== */}
 
                         <TableCell>
 
@@ -57,14 +91,17 @@ function UserTable({
                                 onClick={() =>
                                     onSort("name")
                                 }
+                                sx={getSortLabelStyles("name")}
                             >
-                                <b>Name</b>
+                                Name
                             </TableSortLabel>
 
                         </TableCell>
 
 
-                        {/* EMAIL */}
+                        {/* =========================
+                            EMAIL
+                        ========================== */}
 
                         <TableCell>
 
@@ -78,14 +115,17 @@ function UserTable({
                                 onClick={() =>
                                     onSort("email")
                                 }
+                                sx={getSortLabelStyles("email")}
                             >
-                                <b>Email</b>
+                                Email
                             </TableSortLabel>
 
                         </TableCell>
 
 
-                        {/* ADDRESS */}
+                        {/* =========================
+                            ADDRESS
+                        ========================== */}
 
                         <TableCell>
 
@@ -99,14 +139,17 @@ function UserTable({
                                 onClick={() =>
                                     onSort("address")
                                 }
+                                sx={getSortLabelStyles("address")}
                             >
-                                <b>Address</b>
+                                Address
                             </TableSortLabel>
 
                         </TableCell>
 
 
-                        {/* ROLE */}
+                        {/* =========================
+                            ROLE
+                        ========================== */}
 
                         <TableCell>
 
@@ -120,14 +163,17 @@ function UserTable({
                                 onClick={() =>
                                     onSort("role")
                                 }
+                                sx={getSortLabelStyles("role")}
                             >
-                                <b>Role</b>
+                                Role
                             </TableSortLabel>
 
                         </TableCell>
 
 
-                        {/* ACTIONS */}
+                        {/* =========================
+                            ACTIONS
+                        ========================== */}
 
                         <TableCell align="center">
 
@@ -140,9 +186,9 @@ function UserTable({
                 </TableHead>
 
 
-                {/* =========================
+                {/* =================================================
                     TABLE BODY
-                ========================== */}
+                ================================================== */}
 
                 <TableBody>
 
@@ -268,232 +314,3 @@ function UserTable({
 }
 
 export default UserTable;
-
-
-//==================================
-
-// import {
-//   Paper,
-//   Table,
-//   TableHead,
-//   TableBody,
-//   TableRow,
-//   TableCell,
-//   TableContainer,
-//   IconButton,
-//   Tooltip,
-//   TableSortLabel,
-//     Box,
-
-// } from "@mui/material";
-
-// import {
-//   Visibility,
-//   Edit,
-//   Delete,
-//   ArrowUpward,
-//   ArrowDownward,
-//   UnfoldMore,
-// } from "@mui/icons-material";
-
-// import { useNavigate } from "react-router-dom";
-
-// function UserTable({
-//   users,
-//   onDelete,
-//   sortBy,
-//   sortOrder,
-//   onSort,
-// }) {
-//     const navigate = useNavigate();
-
-//     const SortIcon = ({ field }) => {
-//   if (sortBy !== field) {
-//     return (
-//       <UnfoldMore
-//         sx={{
-//           fontSize: 18,
-//           verticalAlign: "middle",
-//           ml: 0.5,
-//           opacity: 0.5,
-//         }}
-//       />
-//     );
-//   }
-
-//   return sortOrder === "asc" ? (
-//     <ArrowUpward
-//       sx={{
-//         fontSize: 18,
-//         verticalAlign: "middle",
-//         ml: 0.5,
-//       }}
-//     />
-//   ) : (
-//     <ArrowDownward
-//       sx={{
-//         fontSize: 18,
-//         verticalAlign: "middle",
-//         ml: 0.5,
-//       }}
-//     />
-//   );
-// };
-
-
-//   return (
-//     <TableContainer component={Paper}>
-//       <Table>
-
-//         <TableHead>
-//           <TableRow>
-
-//             <TableCell>
-//   <Tooltip title="Sort by Name">
-//     <Box
-//       component="span"
-//       onClick={() => onSort("name")}
-//       sx={{
-//         cursor: "pointer",
-//         display: "inline-flex",
-//         alignItems: "center",
-//         fontWeight: "bold",
-//         userSelect: "none",
-//       }}
-//     >
-//       Name
-//       <SortIcon field="name" />
-//     </Box>
-//   </Tooltip>
-// </TableCell>
-
-// <TableCell>
-//   <Tooltip title="Sort by Email">
-//     <Box
-//       component="span"
-//       onClick={() => onSort("email")}
-//       sx={{
-//         cursor: "pointer",
-//         display: "inline-flex",
-//         alignItems: "center",
-//         fontWeight: "bold",
-//         userSelect: "none",
-//       }}
-//     >
-//       Email
-//       <SortIcon field="email" />
-//     </Box>
-//   </Tooltip>
-// </TableCell>
-
-// <TableCell>
-//   <Tooltip title="Sort by Address">
-//     <Box
-//       component="span"
-//       onClick={() => onSort("address")}
-//       sx={{
-//         cursor: "pointer",
-//         display: "inline-flex",
-//         alignItems: "center",
-//         fontWeight: "bold",
-//         userSelect: "none",
-//       }}
-//     >
-//       Address
-//       <SortIcon field="address" />
-//     </Box>
-//   </Tooltip>
-// </TableCell>
-
-// <TableCell>
-//   <Tooltip title="Sort by Role">
-//     <Box
-//       component="span"
-//       onClick={() => onSort("role")}
-//       sx={{
-//         cursor: "pointer",
-//         display: "inline-flex",
-//         alignItems: "center",
-//         fontWeight: "bold",
-//         userSelect: "none",
-//       }}
-//     >
-//       Role
-//       <SortIcon field="role" />
-//     </Box>
-//   </Tooltip>
-// </TableCell>
-
-//             <TableCell align="center">
-//               <b>Actions</b>
-//             </TableCell>
-//           </TableRow>
-//         </TableHead>
-
-//         <TableBody>
-
-//           {users.map((user) => (
-
-//             <TableRow key={user.id}>
-
-//               <TableCell>{user.name}</TableCell>
-
-//               <TableCell>{user.email}</TableCell>
-
-//               <TableCell>{user.address}</TableCell>
-
-//               <TableCell>{user.role}</TableCell>
-
-//               <TableCell align="center">
-
-//                 <Tooltip title="View">
-
-//                   <IconButton
-//                     color="primary"
-//                     onClick={() =>
-//                       navigate(`/admin/users/${user.id}`)
-//                     }
-//                   >
-//                     <Visibility />
-//                   </IconButton>
-
-//                 </Tooltip>
-
-//                 <Tooltip title="Edit">
-
-//                   <IconButton
-//                     color="warning"
-//                     onClick={() =>
-//                       navigate(`/admin/users/edit/${user.id}`)
-//                     }
-//                   >
-//                     <Edit />
-//                   </IconButton>
-
-//                 </Tooltip>
-
-//                 <Tooltip title="Delete">
-
-//                   <IconButton
-//                      color="error"
-//                      onClick={() => onDelete(user.id)}
-//                     >
-//                     <Delete />
-//                   </IconButton>
-
-//                 </Tooltip>
-
-//               </TableCell>
-
-//             </TableRow>
-
-//           ))}
-
-//         </TableBody>
-
-//       </Table>
-//     </TableContainer>
-//   );
-// }
-
-// export default UserTable;
