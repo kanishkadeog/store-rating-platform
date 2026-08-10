@@ -78,7 +78,10 @@ const getAllOwners = async (req, res, next) => {
 
 const getAllStores = async (req, res, next) => {
   try {
-    const stores = await adminService.getAllStores();
+    const stores =
+      await adminService.getAllStores(
+        req.query
+      );
 
     res.status(200).json({
       success: true,

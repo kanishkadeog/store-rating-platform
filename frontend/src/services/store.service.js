@@ -5,10 +5,15 @@ import api from "../api/axios";
 /**
  * Get all stores
  */
-export const getAllStores = async () => {
-  const response = await api.get("/admin/stores");
+// export const getAllStores = async () => {
+//   const response = await api.get("/admin/stores");
 
-  return response.data;
+//   return response.data;
+// };
+export const getAllStores = async (params = {}) => {
+  return await api.get("/admin/stores", {
+    params,
+  });
 };
 
 /**

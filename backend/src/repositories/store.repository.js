@@ -50,7 +50,11 @@ const hasStoresByOwner = async (ownerId) => {
 };
 
 // Get stores with pagination, search and sorting
-const getStores = async (query) => {
+// =====================================================
+// GET STORES WITH PAGINATION, SEARCH AND SORTING
+// =====================================================
+
+const getStores = async (query = {}) => {
   const {
     page = 1,
     limit = 10,
@@ -59,7 +63,12 @@ const getStores = async (query) => {
     order = "ASC",
   } = query;
 
-  const offset = (Number(page) - 1) * Number(limit);
+  const offset =
+    (Number(page) - 1) * Number(limit);
+
+  // =====================================================
+  // SEARCH CONDITIONS
+  // =====================================================
 
   const whereCondition = {};
 
@@ -80,31 +89,82 @@ const getStores = async (query) => {
           [Op.like]: `%${search}%`,
         },
       },
+      {
+        "$owner.email$": {
+          [Op.like]: `%${search}%`,
+        },
+      },
     ];
   }
 
-  const { count, rows } = await Store.findAndCountAll({
-    where: whereCondition,
+  // =====================================================
+  // SORTING VALIDATION
+  // =====================================================
 
-    include: [
-      {
-        model: User,
-        as: "owner",
-        attributes: ["id", "name", "email"],
-      },
-    ],
+  // Only these database fields can be sorted.
+  // Never directly trust sortBy from req.query.
 
-    order: [[sortBy, order.toUpperCase()]],
+  const allowedSortFields = {
+    name: "name",
+    email: "email",
+    address: "address",
+    createdAt: "createdAt",
+  };
 
-    limit: Number(limit),
+  // If invalid sortBy is received,
+  // default to name.
+  const validSortBy =
+    allowedSortFields[sortBy] || "name";
 
-    offset,
-  });
+  // Only ASC is accepted explicitly.
+  // Everything else becomes DESC.
+  const validOrder =
+    String(order).toUpperCase() === "ASC"
+      ? "ASC"
+      : "DESC";
+
+  // =====================================================
+  // FETCH STORES
+  // =====================================================
+
+  const { count, rows } =
+    await Store.findAndCountAll({
+      where: whereCondition,
+
+      include: [
+        {
+          model: User,
+          as: "owner",
+          attributes: [
+            "id",
+            "name",
+            "email",
+          ],
+        },
+      ],
+
+      order: [
+        [validSortBy, validOrder],
+      ],
+
+      limit: Number(limit),
+
+      offset,
+    });
+
+  // =====================================================
+  // RESPONSE
+  // =====================================================
 
   return {
     totalStores: count,
+
     currentPage: Number(page),
-    totalPages: Math.ceil(count / Number(limit)),
+
+    totalPages: Math.ceil(
+      count / Number(limit)
+    ),
+
     stores: rows,
   };
 };

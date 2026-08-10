@@ -156,8 +156,8 @@ const getAllOwners = async () => {
   return await userRepository.getAllOwners();
 };
 
-const getAllStores = async () => {
-  return await storeRepository.getAllStores();
+const getAllStores = async (query = {}) => {
+  return await storeRepository.getStores(query);
 };
 
 /**
