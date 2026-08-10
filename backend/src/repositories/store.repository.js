@@ -1,7 +1,13 @@
 // store-rating-platform/backend/src/repositories/store.repository.js
 
-const { Store, User } = require("../models");
-const { Op } = require("sequelize");
+const { Store, User, Rating } = require("../models");
+
+const {
+  Op,
+  fn,
+  col,
+  literal,
+} = require("sequelize");
 
 // Create a new store
 const createStore = async (data) => {
@@ -54,6 +60,10 @@ const hasStoresByOwner = async (ownerId) => {
 // GET STORES WITH PAGINATION, SEARCH AND SORTING
 // =====================================================
 
+// =====================================================
+// GET STORES WITH PAGINATION, SEARCH AND SORTING
+// =====================================================
+
 const getStores = async (query = {}) => {
   const {
     page = 1,
@@ -79,16 +89,25 @@ const getStores = async (query = {}) => {
           [Op.like]: `%${search}%`,
         },
       },
+
+      {
+        email: {
+          [Op.like]: `%${search}%`,
+        },
+      },
+
       {
         address: {
           [Op.like]: `%${search}%`,
         },
       },
+
       {
         "$owner.name$": {
           [Op.like]: `%${search}%`,
         },
       },
+
       {
         "$owner.email$": {
           [Op.like]: `%${search}%`,
@@ -101,27 +120,59 @@ const getStores = async (query = {}) => {
   // SORTING VALIDATION
   // =====================================================
 
-  // Only these database fields can be sorted.
-  // Never directly trust sortBy from req.query.
+  const allowedSortFields = [
+    "name",
+    "email",
+    "address",
+    "owner",
+    "averageRating",
+    "createdAt",
+  ];
 
-  const allowedSortFields = {
-    name: "name",
-    email: "email",
-    address: "address",
-    createdAt: "createdAt",
-  };
+  const validSortBy = allowedSortFields.includes(sortBy)
+    ? sortBy
+    : "name";
 
-  // If invalid sortBy is received,
-  // default to name.
-  const validSortBy =
-    allowedSortFields[sortBy] || "name";
-
-  // Only ASC is accepted explicitly.
-  // Everything else becomes DESC.
   const validOrder =
     String(order).toUpperCase() === "ASC"
       ? "ASC"
       : "DESC";
+
+  // =====================================================
+  // SORTING CONFIGURATION
+  // =====================================================
+
+  let orderClause;
+
+  if (validSortBy === "owner") {
+    // Sort using owner's name
+    orderClause = [
+      [
+        {
+          model: User,
+          as: "owner",
+        },
+        "name",
+        validOrder,
+      ],
+    ];
+  } else if (validSortBy === "averageRating") {
+    // Sort using calculated average rating
+    orderClause = [
+      [
+        literal("averageRating"),
+        validOrder,
+      ],
+    ];
+  } else {
+    // Normal Store columns
+    orderClause = [
+      [
+        validSortBy,
+        validOrder,
+      ],
+    ];
+  }
 
   // =====================================================
   // FETCH STORES
@@ -131,38 +182,74 @@ const getStores = async (query = {}) => {
     await Store.findAndCountAll({
       where: whereCondition,
 
+      attributes: [
+        "id",
+        "name",
+        "email",
+        "address",
+        "ownerId",
+
+        [
+          fn(
+            "AVG",
+            col("ratings.rating")
+          ),
+          "averageRating",
+        ],
+      ],
+
       include: [
         {
           model: User,
           as: "owner",
+
           attributes: [
             "id",
             "name",
             "email",
           ],
         },
+
+        {
+          model: Rating,
+          as: "ratings",
+
+          attributes: [],
+
+          required: false,
+        },
       ],
 
-      order: [
-        [validSortBy, validOrder],
-      ],
+      group: ["Store.id", "owner.id"],
+
+      order: orderClause,
 
       limit: Number(limit),
 
       offset,
+
+      subQuery: false,
     });
+
+  // =====================================================
+  // COUNT
+  // =====================================================
+
+  const totalStores = Array.isArray(count)
+    ? count.length
+    : count;
 
   // =====================================================
   // RESPONSE
   // =====================================================
 
   return {
-    totalStores: count,
+    totalStores,
 
     currentPage: Number(page),
 
     totalPages: Math.ceil(
-      count / Number(limit)
+      totalStores / Number(limit)
     ),
 
     stores: rows,
@@ -172,14 +259,49 @@ const getStores = async (query = {}) => {
 /**
  * Get store by ID
  */
+/**
+ * Get store by ID
+ */
 const getStoreById = async (id) => {
   return await Store.findByPk(id, {
+    attributes: [
+      "id",
+      "name",
+      "email",
+      "address",
+      "ownerId",
+
+      [
+        fn(
+          "AVG",
+          col("ratings.rating")
+        ),
+        "averageRating",
+      ],
+    ],
+
     include: [
       {
         model: User,
         as: "owner",
-        attributes: ["id", "name", "email"],
+        attributes: [
+          "id",
+          "name",
+          "email",
+        ],
       },
+
+      {
+        model: Rating,
+        as: "ratings",
+        attributes: [],
+        required: false,
+      },
+    ],
+
+    group: [
+      "Store.id",
+      "owner.id",
     ],
   });
 };

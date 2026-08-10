@@ -159,15 +159,19 @@ function StoreTable({
 
             {/* OWNER */}
 
-            <TableCell>
-              <b>Owner</b>
-            </TableCell>
+           {/* OWNER */}
 
-            {/* RATING */}
+<SortableHeader
+  label="Owner"
+  field="owner"
+/>
 
-            <TableCell>
-              <b>Average Rating</b>
-            </TableCell>
+{/* RATING */}
+
+<SortableHeader
+  label="Average Rating"
+  field="averageRating"
+/>
 
             {/* ACTIONS */}
 
