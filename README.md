@@ -36,139 +36,176 @@ The Store Rating Platform is a role-based web application designed to provide a 
 
 The system also provides administrative and store-owner functionality.
 
-### 👨‍💼 Administrator
+### User Roles
 
-Administrators can:
+The application supports three roles:
 
-- View dashboard statistics
-- Manage users
-- Create users
-- View stores
-- Create stores
-- Assign store owners
-- View store information
-- Monitor average store ratings
+1. **System Administrator**
+2. **Normal User**
+3. **Store Owner**
 
-### 🏪 Store Owner
-
-Store owners can:
-
-- View their store dashboard
-- View average store rating
-- View total number of ratings
-- View users who rated their store
-- View individual ratings
-- Search/filter ratings
-- Navigate between dashboard and ratings
-
-### 👤 Normal User
-
-Normal users can:
-
-- View available stores
-- Search stores
-- Navigate through paginated stores
-- View average store ratings
-- Submit a rating
-- Update an existing rating
-- View their own ratings
-- View rating statistics
-- See their average rating
+All roles use the same authentication system, while authorization determines which features are available after login.
 
 ---
 
-# ✨ Key Features
+# ✨ Core Features
 
 ## 🔐 Authentication & Authorization
 
 - User registration
 - User login
+- Single login system for all roles
 - JWT-based authentication
-- Protected API routes
+- Protected routes
 - Role-based authorization
-- Admin role
-- Store Owner role
-- Normal User role
+- Password hashing using bcrypt
 - Change password functionality
-- Automatic JWT attachment using Axios interceptor
+- Automatic JWT attachment through Axios interceptor
 - Invalid/expired token handling
+- Logout functionality
 
 ---
 
-## 👨‍💼 Admin Dashboard
+# 👨‍💼 System Administrator
 
-Admin functionality includes:
+Administrators have complete management access to the platform.
 
-- Dashboard overview
-- User management
-- Store management
-- Create user
-- Create store
+### Dashboard
+
+The admin dashboard provides:
+
+- Total number of users
+- Total number of stores
+- Total number of submitted ratings
+
+### User Management
+
+Administrators can:
+
+- Create normal users
+- Create store owners
+- Create administrators
+- View users
+- View individual user details
+- Update user information
+- View user roles
+- Search/filter users
+
+### Store Management
+
+Administrators can:
+
+- Create stores
+- View all stores
 - View store details
-- Store owner assignment
-- Average store rating display
-- Role-based access control
+- Assign store owners
+- View store ratings
+- Monitor average ratings
+
+### Listing Features
+
+Administrative listings support:
+
+- Search
+- Pagination
+- Ascending sorting
+- Descending sorting
+- Key-field filtering
 
 ---
 
-## 🏪 Owner Dashboard
+# 👤 Normal User
 
-Store owners receive a dedicated dashboard containing:
+Normal users can register and interact with stores.
 
-### Store Information
+### Registration
 
-- Store name
-- Store email
-- Store address
+Users can register using:
 
-### Rating Statistics
+- Name
+- Email
+- Address
+- Password
 
-- Average rating
-- Total ratings
+### Store Discovery
 
-### Ratings Page
+Users can:
 
-Owners can see:
+- View all registered stores
+- Search stores
+- Search by store name/address
+- Navigate through paginated results
+- View overall store rating
 
-- User name
-- User email
-- Rating
-- Rating date
+### Rating
 
----
+Users can:
 
-## 👤 User Dashboard
+- Submit a rating from 1–5
+- View their submitted rating
+- Update an existing rating
+- View their rating history
 
-The normal user dashboard includes:
+### User Dashboard
 
-### Summary Cards
+The dashboard provides summary statistics:
 
 - Stores Available
 - Stores I Rated
 - My Average Rating
 
-### Store Listing
+---
 
-- Store name
-- Email
-- Address
-- Average rating
-- User's rating
-- Rate/Update Rating action
+# 🏪 Store Owner
 
-### Search
+Store owners receive a dedicated dashboard for monitoring their store.
 
-Users can search stores using:
+### Dashboard
+
+Owners can view:
 
 - Store name
 - Store email
+- Store address
+- Average store rating
+- Total ratings
 
-### Pagination
+### Ratings
 
-Store results are displayed using server-side pagination.
+Store owners can view:
 
-### Rating Management
+- User name
+- User email
+- Submitted rating
+- Rating date
 
+Ratings support:
+
+- Search
+- Pagination
+- Ascending sorting
+- Descending sorting
+
+---
+
+# ⭐ Rating System
+
+Ratings are restricted to:
+
+```text
+1 ⭐
+2 ⭐
+3 ⭐
+4 ⭐
+5 ⭐
+```
+A normal user can submit only one rating per store.
+
+If a rating already exists, the user can update it.
+
+
+
+------------------------------------------
 Users can:
 
 ```text
