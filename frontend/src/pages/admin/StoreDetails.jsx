@@ -103,9 +103,13 @@ function StoreDetails() {
                 readOnly
               />
 
-              <Typography>
+              {/* <Typography>
                 ({store.averageRating || 0})
-              </Typography>
+              </Typography> */}
+
+              <Typography>
+               ({Number(store.averageRating || 0).toFixed(1)})
+           </Typography>
             </Box>
 
             <Button
