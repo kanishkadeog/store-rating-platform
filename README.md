@@ -598,7 +598,7 @@ Stores          Ratings
            ▼
         Rating
 ```
-Main relationships
+Main relationships:
 - A user can submit multiple ratings.
 - A store can receive multiple ratings.
 - A user can rate a particular store only once.
@@ -611,120 +611,299 @@ Main relationships
 
 Security measures implemented include:
 
-JWT Authentication
-
+### JWT Authentication
 Protected endpoints require a valid JWT.
-
+```
 Authorization: Bearer <token>
-Role-Based Authorization
+```
 
+### Role-Based Authorization
 API access is restricted according to role.
-
+```
 ADMIN
 USER
 OWNER
-Password Security
+```
 
+### Password Security
 Passwords are hashed using bcrypt rather than being stored in plain text.
 
-Helmet
+### Helmet
 
 HTTP security headers are configured using Helmet.
 
-CORS
+### CORS
 
 Cross-origin requests are controlled through CORS configuration.
 
-Input Validation
+### Input Validation
 
 Incoming requests are validated before reaching business logic.
 
+---
 
+# ⚡ Frontend Architecture
 
-------------------------------------------
-
-
-Users can:
-
-```text
-Rate Store
-    ↓
-Submit Rating
-    ↓
-Rating Saved
-    ↓
-Update Rating
-    ↓
-Updated Rating
-
+The React application follows a component-based architecture.
 ```
-### 🧱 Architecture
+Pages
+  │
+  ├── Admin
+  ├── User
+  └── Owner
+        │
+        ▼
+    Components
+        │
+        ▼
+     Services
+        │
+        ▼
+       Axios
+        │
+        ▼
+    REST API
+```
+### Authentication Context
+Authentication state is managed through React Context.
 
-The backend follows a layered architecture designed to keep business logic separated from HTTP handling and database operations.
+### Axios Interceptor
+JWT tokens are automatically attached to protected API requests.
 
+### Reusable Components
+The application uses reusable components for:
+- Tables
+- Search
+- Pagination
+- Rating dialogs
+- Navigation
+- Dashboards
+- Forms
 
-Request
-   │
-   ▼
-Routes
-   │
-   ▼
-Middleware
-   │
-   ▼
-Controller
-   │
-   ▼
-Service
-   │
-   ▼
-Repository
-   │
-   ▼
-Sequelize ORM
-   │
-   ▼
-MySQL Database
+---
 
---- 
+# 📱 Responsive UI
 
-## 🛠️ Technology Stack
+The frontend is built using Material UI and supports responsive layouts across different screen sizes.
+
+The dashboards use:
+
+- Responsive grids
+- Responsive tables
+- Compact spacing
+- Pagination controls
+- Responsive forms
+- Reusable Material UI components
+
+---
+
+# 🧪 API Testing
+
+API endpoints were tested using Postman.
+
+Testing includes:
+
+- Signup
+- Login
+- JWT authentication
+- Role authorization
+- User APIs
+- Admin APIs
+- Owner APIs
+- Rating creation
+- Rating update
+- Validation errors
+- Unauthorized requests
+- Invalid/expired tokens
+- Pagination
+- Search
+
+---
+
+# 🚀 Local Development
+
+### 1. Clone Repository
+```
+git clone <YOUR_GITHUB_REPOSITORY_URL>
+```
+```
+cd store-rating-platform
+```
+### 2. Backend Setup
+```
+cd backend
+```
+Install dependencies:
+```
+npm install
+```
+Create:
+```
+.env
+```
+Example:
+```
+PORT=5000
+
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=store_rating_platform
+DB_USER=root
+DB_PASSWORD=your_password
+
+JWT_SECRET=your_secret_key
+JWT_EXPIRES_IN=7d
+```
+
+Start development server:
+```
+npm run dev
+``` 
+Backend:
+```
+http://localhost:5000
+```
+---
+
+# 💻 Frontend Setup
+
+Open another terminal:
+```
+cd frontend
+```
+Install dependencies:
+```
+npm install
+```
+Start Vite:
+```
+npm run dev
+```
+Frontend:
+```
+http://localhost:5173
+```
+
+---
+
+# 🏭 Production Build
+
+To create the production frontend build:
+```
+npm run build
+```
+The production files are generated inside:
+```
+frontend/dist/
+```
+
+---
+
+# ☁️ Deployment
+
+### Frontend
+
+The React/Vite frontend is deployed using:
+
+Vercel
+
 ### Backend
+
+The Express.js REST API is deployed using:
+
+Render
+
+### Database
+
+The application uses MySQL as its relational database.
+
+Railway.com 
+
+---
+
+# 📊 Engineering Practices
+
+The project demonstrates several software engineering practices:
+
+- Layered backend architecture
+- Repository pattern
+- Service layer
+- RESTful API design
+- JWT authentication
+- Role-based authorization
+- Input validation
+- Password hashing
+- Reusable React components
+- API service abstraction
+- Axios interceptors
+- Server-side pagination
+- Search functionality
+- Sorting
+- Error handling middleware
+- Environment variables
+- Production deployment
+- Separation of frontend and backend concerns
+
+---
+
+# 🔮 Future Improvements
+
+Potential future enhancements include:
+
+- Swagger/OpenAPI documentation
+- Automated unit and integration tests
+- Docker support
+- CI/CD pipeline
+- Refresh token mechanism
+- Forgot password workflow
+- Email verification
+- Advanced analytics
+- Store-owner multiple-store support
+- Improved caching
+- Database indexing optimization
+
+---
+
+👨‍💻 Author
+Kanishka Ramesh Deogade
+
+Full Stack Developer
+
+Technologies:
+```
+JavaScript
+React.js
 Node.js
 Express.js
-JavaScript
-### Database
 MySQL
-Sequelize ORM
-### Authentication
+MongoDB
+REST APIs
 JWT
-bcrypt
-### Validation
-express-validator
-### Security
-Helmet
-CORS
-JWT authorization
-### Middleware / Utilities
-Morgan
-Compression
-Cookie Parser
-### Development
-Nodemon
-Postman
 Git
 GitHub
+Project
+```
 
-## Architecture Responsibilities
+⭐ Store Rating Platform
 
-Layer	Responsibility
-Routes	Define API endpoints
-Middleware	Authentication, authorization, validation
-Controllers	Handle HTTP requests/responses
-Services	Business logic
-Repositories	Database operations
-Models	Sequelize database models
-Validators	Request validation
-Utils	Reusable utilities
-Constants	Roles and application constants
-Config	Database/environment configuration
+Built as a full-stack role-based web application demonstrating authentication, authorization, REST APIs, relational database design, frontend development, and production deployment.
+
+⭐ Project Highlights
+```
+🔐 Secure Authentication
+👥 Role-Based Access Control
+👨‍💼 Admin Management
+👤 User Rating System
+🏪 Store Owner Dashboard
+⭐ 1–5 Star Rating System
+🔎 Search
+📄 Server-Side Pagination
+↕️ Ascending / Descending Sorting
+🛡️ Input Validation
+🗄️ MySQL + Sequelize
+⚡ REST APIs
+📱 Responsive React UI
+☁️ Production Deployment
+```
+
+
