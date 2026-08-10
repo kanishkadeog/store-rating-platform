@@ -10,6 +10,7 @@ import {
   TableContainer,
   IconButton,
   Tooltip,
+  TableSortLabel,
 } from "@mui/material";
 
 import {
@@ -20,8 +21,14 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
-function UserTable({ users,onDelete, }) {
-  const navigate = useNavigate();
+function UserTable({
+  users,
+  onDelete,
+  sortBy,
+  sortOrder,
+  onSort,
+}) {
+    const navigate = useNavigate();
 
   return (
     <TableContainer component={Paper}>
@@ -29,10 +36,63 @@ function UserTable({ users,onDelete, }) {
 
         <TableHead>
           <TableRow>
-            <TableCell><b>Name</b></TableCell>
-            <TableCell><b>Email</b></TableCell>
-            <TableCell><b>Address</b></TableCell>
-            <TableCell><b>Role</b></TableCell>
+
+            <TableCell>
+  <TableSortLabel
+    active={sortBy === "name"}
+    direction={
+      sortBy === "name"
+        ? sortOrder.toLowerCase()
+        : "asc"
+    }
+    onClick={() => onSort("name")}
+  >
+    <b>Name</b>
+  </TableSortLabel>
+</TableCell>
+
+<TableCell>
+  <TableSortLabel
+    active={sortBy === "email"}
+    direction={
+      sortBy === "email"
+        ? sortOrder.toLowerCase()
+        : "asc"
+    }
+    onClick={() => onSort("email")}
+  >
+    <b>Email</b>
+  </TableSortLabel>
+</TableCell>
+
+<TableCell>
+  <TableSortLabel
+    active={sortBy === "address"}
+    direction={
+      sortBy === "address"
+        ? sortOrder.toLowerCase()
+        : "asc"
+    }
+    onClick={() => onSort("address")}
+  >
+    <b>Address</b>
+  </TableSortLabel>
+</TableCell>
+
+<TableCell>
+  <TableSortLabel
+    active={sortBy === "role"}
+    direction={
+      sortBy === "role"
+        ? sortOrder.toLowerCase()
+        : "asc"
+    }
+    onClick={() => onSort("role")}
+  >
+    <b>Role</b>
+  </TableSortLabel>
+</TableCell>
+
             <TableCell align="center">
               <b>Actions</b>
             </TableCell>

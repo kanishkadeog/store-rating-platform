@@ -34,32 +34,61 @@ function Users() {
 
   const [page, setPage] = useState(1);
 
+  // Sorting
+const [sortBy, setSortBy] = useState("createdAt");
+const [sortOrder, setSortOrder] = useState("DESC");
+
   const [openDelete, setOpenDelete] = useState(false);
 
 const [selectedUserId, setSelectedUserId] =useState(null);
+
+
 
 const navigate = useNavigate();
 
 const rowsPerPage = 5;
 
-  useEffect(() => {
-    fetchUsers();
-  }, []);
+ useEffect(() => {
+  fetchUsers();
+}, [sortBy, sortOrder]);
 
-  const fetchUsers = async () => {
-    try {
-      const response = await getAllUsers();
+ const fetchUsers = async () => {
+  try {
+    setLoading(true);
 
-      setUsers(response.data);
-    } catch (error) {
-      toast.error(
-        error.response?.data?.message ||
+    const response = await getAllUsers({
+      sortBy,
+      sortOrder,
+    });
+
+    setUsers(response.data || []);
+  } catch (error) {
+    toast.error(
+      error.response?.data?.message ||
         "Failed to fetch users"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
+
+const handleSort = (field) => {
+  if (sortBy === field) {
+    // Toggle ASC ↔ DESC
+    setSortOrder((prev) =>
+      prev === "ASC" ? "DESC" : "ASC"
+    );
+  } else {
+    // New column → start with ascending
+    setSortBy(field);
+    setSortOrder("ASC");
+  }
+
+  // Reset pagination
+  setPage(1);
+};
+
 
   const handleDeleteClick = (id) => {
   setSelectedUserId(id);
@@ -166,6 +195,9 @@ const paginatedUsers = filteredUsers.slice(
   <UserTable
   users={paginatedUsers}
   onDelete={handleDeleteClick}
+  sortBy={sortBy}
+  sortOrder={sortOrder}
+  onSort={handleSort}
 />
 
   <Box

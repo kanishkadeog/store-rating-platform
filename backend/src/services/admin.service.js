@@ -141,8 +141,12 @@ const createStore = async (data) => {
   return store;
 };
 
-const getAllUsers = async () => {
-  return await userRepository.getAllUsers();
+// const getAllUsers = async () => {
+//   return await userRepository.getAllUsers();
+// };
+
+const getAllUsers = async (query) => {
+  return await userRepository.getAllUsers(query);
 };
 
 /**

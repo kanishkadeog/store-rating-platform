@@ -46,7 +46,11 @@ const createStore = async (req, res, next) => {
 
 const getAllUsers = async (req, res, next) => {
   try {
-    const users = await adminService.getAllUsers();
+    // const users = await adminService.getAllUsers();
+
+    const users = await adminService.getAllUsers(
+  req.query
+);
 
     res.status(200).json({
       success: true,

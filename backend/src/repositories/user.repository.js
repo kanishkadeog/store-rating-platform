@@ -36,15 +36,74 @@ const getUserById = async (id) => {
   });
 };
 
+// // Get all users (excluding password)
+// const getAllUsers = async () => {
+//   return await User.findAll({
+//     attributes: {
+//       exclude: ["password"],
+//     },
+//     order: [["createdAt", "DESC"]],
+//   });
+// };
+
+//----
+
 // Get all users (excluding password)
-const getAllUsers = async () => {
+// Supports sorting by name, email, address, and role
+const getAllUsers = async (query = {}) => {
+  const {
+    sortBy = "createdAt",
+    sortOrder = "desc",
+  } = query;
+
+  // -------------------------------------------------
+  // Allowed sorting columns
+  // -------------------------------------------------
+  // IMPORTANT:
+  // Never directly pass user-provided sortBy
+  // into Sequelize.
+  //
+  // This whitelist prevents invalid/unwanted
+  // database column access.
+  // -------------------------------------------------
+
+  const allowedSortFields = {
+    name: "name",
+    email: "email",
+    address: "address",
+    role: "role",
+    createdAt: "createdAt",
+  };
+
+  // -------------------------------------------------
+  // Validate sort field
+  // -------------------------------------------------
+
+  const orderField =
+    allowedSortFields[sortBy] || "createdAt";
+
+  // -------------------------------------------------
+  // Validate sort direction
+  // -------------------------------------------------
+
+  const orderDirection =
+    String(sortOrder).toLowerCase() === "asc"
+      ? "ASC"
+      : "DESC";
+
   return await User.findAll({
     attributes: {
       exclude: ["password"],
     },
-    order: [["createdAt", "DESC"]],
+
+    order: [
+      [orderField, orderDirection],
+    ],
   });
 };
+
+//----
+
 
 /**
  * Get all users with OWNER role
