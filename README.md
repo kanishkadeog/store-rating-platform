@@ -203,7 +203,66 @@ A normal user can submit only one rating per store.
 
 If a rating already exists, the user can update it.
 
+Dashboard Refreshed
+🔎 Search, Pagination & Sorting
 
+The application uses server-side data handling for scalable listings.
+
+Search
+
+Supported listing searches include relevant fields such as:
+
+Store name
+Address
+Email
+User information
+Pagination
+
+Large datasets are divided into pages to avoid loading unnecessary records at once.
+
+Example:
+
+Page 1 → Records 1–5
+Page 2 → Records 6–10
+Page 3 → Records 11–15
+Sorting
+
+Tables support ascending and descending sorting for important fields.
+
+Example:
+
+Name ↑
+Name ↓
+
+Email ↑
+Email ↓
+
+Rating ↑
+Rating ↓
+
+Sorting is handled through API query parameters and database-level ordering rather than sorting the complete dataset only on the frontend.
+
+🛡️ Form Validation
+
+The application validates user input before processing requests.
+
+Name
+Minimum: 20 characters
+Maximum: 60 characters
+Address
+Maximum: 400 characters
+Password
+Length: 8–16 characters
+At least one uppercase character
+At least one special character
+Email
+
+Standard email format validation.
+
+Rating
+Minimum: 1
+Maximum: 5
+🏗️ System Architecture
 
 ------------------------------------------
 Users can:
