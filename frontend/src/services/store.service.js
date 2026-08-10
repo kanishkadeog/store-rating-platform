@@ -11,9 +11,10 @@ import api from "../api/axios";
 //   return response.data;
 // };
 export const getAllStores = async (params = {}) => {
-  return await api.get("/admin/stores", {
+  const response = await api.get("/admin/stores", {
     params,
   });
+  return response.data;
 };
 
 /**
