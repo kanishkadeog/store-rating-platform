@@ -225,10 +225,9 @@ function StoreTable({
                 </TableCell>
 
                 <TableCell>
-                  ⭐{" "}
-                  {store.averageRating ??
-                    "0.0"}
-                </TableCell>
+                    ⭐{" "}
+                  {Number(store.averageRating || 0).toFixed(1)}
+                  </TableCell>
 
                 <TableCell align="center">
 
