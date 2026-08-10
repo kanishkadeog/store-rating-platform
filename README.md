@@ -222,8 +222,8 @@ Supported listing searches include relevant fields such as:
 
 Large datasets are divided into pages to avoid loading unnecessary records at once.
 
-```Example:
-
+Example:
+```
 Page 1 → Records 1–5
 Page 2 → Records 6–10
 Page 3 → Records 11–15
@@ -233,8 +233,8 @@ Page 3 → Records 11–15
 
 Tables support ascending and descending sorting for important fields.
 
-```Example:
-
+Example:
+```
 Name ↑
 Name ↓
 
@@ -246,33 +246,234 @@ Rating ↓
 ```
 Sorting is handled through API query parameters and database-level ordering rather than sorting the complete dataset only on the frontend.
 
+---
+
 # 🛡️ Form Validation
 
 The application validates user input before processing requests.
 
-Name
+Name:
 ```
 Minimum: 20 characters
 Maximum: 60 characters
 ```
+
+Address:
 ```
-Address
 Maximum: 400 characters
 ```
-Password
+
+Password:
+```
 Length: 8–16 characters
 At least one uppercase character
 At least one special character
-Email
+```
 
+Email:
+```
 Standard email format validation.
+```
 
-Rating
+Rating:
+```
 Minimum: 1
 Maximum: 5
-🏗️ System Architecture
+```
+---
+
+# 🏗️ System Architecture
+
+The backend follows a layered architecture.
+```
+                    Client
+                      │
+                      ▼
+                  React.js
+                      │
+                      ▼
+                  REST API
+                      │
+                      ▼
+                 Express.js
+                      │
+                      ▼
+                   Routes
+                      │
+                      ▼
+                 Middleware
+                      │
+          ┌───────────┴───────────┐
+          ▼                       ▼
+ Authentication              Validation
+ Authorization
+          │
+          ▼
+       Controller
+          │
+          ▼
+        Service
+          │
+          ▼
+      Repository
+          │
+          ▼
+     Sequelize ORM
+          │
+          ▼
+       MySQL
+```
+This architecture separates responsibilities and makes the backend easier to maintain, test, and extend.
+
+---
+
+# 🧱 Backend Architecture
+
+The backend follows a layered architecture:
+
+```
+Routes
+   ↓
+Middleware
+   ↓
+Controllers
+   ↓
+Services
+   ↓
+Repositories
+   ↓
+Models
+   ↓
+Sequelize
+   ↓
+MySQL
+```
+### Routes
+
+Responsible for defining API endpoints.
+
+### Middleware
+
+Responsible for:
+
+- Authentication
+- Authorization
+- Validation
+- Security middleware
+
+### Controllers
+
+Handle HTTP requests and responses.
+
+### Services
+
+Contain application/business logic.
+
+### Repositories
+
+Handle database operations.
+
+### Models
+
+Define Sequelize database models and relationships.
+
+### Validators
+
+Validate incoming API requests.
+
+### Utils
+
+Contain reusable helper functionality.
+
+### Constants
+
+Contain application constants such as user roles.
+
+### Config
+
+Contains database and environment configuration.
+
+---
+
+# 🛠️ Technology Stack
+
+### Frontend
+- React.js
+- Vite
+- JavaScript
+Material UI
+React Router
+Axios
+React Hook Form
+React Toastify
+Backend
+Node.js
+Express.js
+JavaScript
+REST API
+Database
+MySQL
+Sequelize ORM
+Authentication & Security
+JWT
+bcrypt
+Helmet
+CORS
+Cookie Parser
+Validation
+express-validator
+Development Tools
+Git
+GitHub
+Postman
+Nodemon
+VS Code
+Deployment
+Vercel
+Render
+📂 Project Structure
+store-rating-platform/
+│
+├── backend/
+│   │
+│   ├── src/
+│   │   ├── config/
+│   │   ├── constants/
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   ├── models/
+│   │   ├── repositories/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   ├── validators/
+│   │   └── server.js
+│   │
+│   ├── .env.example
+│   ├── package.json
+│   └── README.md
+│
+├── frontend/
+│   │
+│   ├── src/
+│   │   ├── api/
+│   │   ├── components/
+│   │   ├── context/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   └── ...
+│   │
+│   ├── public/
+│   ├── package.json
+│   └── vite.config.js
+│
+└── README.md
+
+
 
 ------------------------------------------
+
+
 Users can:
 
 ```text
@@ -290,6 +491,7 @@ Updated Rating
 ### 🧱 Architecture
 
 The backend follows a layered architecture designed to keep business logic separated from HTTP handling and database operations.
+
 
 Request
    │
