@@ -864,7 +864,8 @@ Potential future enhancements include:
 
 ---
 
-👨‍💻 Author
+### 👨‍💻 Author
+
 Kanishka Ramesh Deogade
 
 Full Stack Developer
