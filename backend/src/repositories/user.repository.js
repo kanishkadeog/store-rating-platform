@@ -36,15 +36,7 @@ const getUserById = async (id) => {
   });
 };
 
-// // Get all users (excluding password)
-// const getAllUsers = async () => {
-//   return await User.findAll({
-//     attributes: {
-//       exclude: ["password"],
-//     },
-//     order: [["createdAt", "DESC"]],
-//   });
-// };
+
 
 //----
 
@@ -153,32 +145,147 @@ const deleteUser = async (id) => {
 /**
  * Get all stores for normal users
  */
-const getAllStores = async (userId, query) => {
+//======================================================
+// const getAllStores = async (userId, query) => {
+//   const {
+//     page = 1,
+//     limit = 10,
+//     search = "",
+//   } = query;
+
+//   const offset =
+//     (Number(page) - 1) * Number(limit);
+
+//   const { rows, count } =
+//     await Store.findAndCountAll({
+//       where: {
+//         [Op.or]: [
+//           {
+//             name: {
+//               [Op.like]: `%${search}%`,
+//             },
+//           },
+//           {
+//             address: {
+//               [Op.like]: `%${search}%`,
+//             },
+//           },
+//         ],
+//       },
+
+//       attributes: [
+//         "id",
+//         "name",
+//         "email",
+//         "address",
+
+//         [
+//           fn(
+//             "AVG",
+//             col("ratings.rating")
+//           ),
+//           "averageRating",
+//         ],
+//       ],
+
+//       include: [
+//         {
+//           model: Rating,
+//           as: "ratings",
+//           attributes: [],
+//           required: false,
+//         },
+//       ],
+
+//       group: ["Store.id"],
+
+//       limit: Number(limit),
+
+//       offset,
+
+//       order: [["createdAt", "DESC"]],
+
+//       subQuery: false,
+//     });
+
+//   return {
+//     total: Array.isArray(count)
+//       ? count.length
+//       : count,
+
+//     currentPage: Number(page),
+
+//     totalPages: Math.ceil(
+//       (Array.isArray(count)
+//         ? count.length
+//         : count) / Number(limit)
+//     ),
+
+//     stores: rows,
+//   };
+// };
+//===================================================
+
+/**
+ * Get all stores for normal users
+ */
+const getAllStores = async (userId, query = {}) => {
   const {
     page = 1,
     limit = 10,
     search = "",
+    sortBy = "name",
+    sortOrder = "ASC",
   } = query;
 
   const offset =
     (Number(page) - 1) * Number(limit);
 
+  // =====================================================
+  // SEARCH
+  // =====================================================
+
+  const whereCondition = {
+    [Op.or]: [
+      {
+        name: {
+          [Op.like]: `%${search}%`,
+        },
+      },
+      {
+        address: {
+          [Op.like]: `%${search}%`,
+        },
+      },
+    ],
+  };
+
+  // =====================================================
+  // SORTING VALIDATION
+  // =====================================================
+
+  const allowedSortFields = {
+    name: "name",
+    email: "email",
+    address: "address",
+    createdAt: "createdAt",
+  };
+
+  const validSortBy =
+    allowedSortFields[sortBy] || "name";
+
+  const validSortOrder =
+    String(sortOrder).toUpperCase() === "ASC"
+      ? "ASC"
+      : "DESC";
+
+  // =====================================================
+  // FETCH STORES
+  // =====================================================
+
   const { rows, count } =
     await Store.findAndCountAll({
-      where: {
-        [Op.or]: [
-          {
-            name: {
-              [Op.like]: `%${search}%`,
-            },
-          },
-          {
-            address: {
-              [Op.like]: `%${search}%`,
-            },
-          },
-        ],
-      },
+      where: whereCondition,
 
       attributes: [
         "id",
@@ -210,28 +317,29 @@ const getAllStores = async (userId, query) => {
 
       offset,
 
-      order: [["createdAt", "DESC"]],
+      order: [
+        [validSortBy, validSortOrder],
+      ],
 
       subQuery: false,
     });
 
+  const total = Array.isArray(count)
+    ? count.length
+    : count;
+
   return {
-    total: Array.isArray(count)
-      ? count.length
-      : count,
+    total,
 
     currentPage: Number(page),
 
     totalPages: Math.ceil(
-      (Array.isArray(count)
-        ? count.length
-        : count) / Number(limit)
+      total / Number(limit)
     ),
 
     stores: rows,
   };
 };
-
 
 module.exports = {
   findUserById,

@@ -10,13 +10,115 @@ import {
   TableContainer,
   Rating,
   Button,
+    Box,
+
 } from "@mui/material";
+
+import {
+  ArrowUpward,
+  ArrowDownward,
+  UnfoldMore,
+} from "@mui/icons-material";
 
 function StoreTable({
   stores,
   onRate,
   getUserRating,
+  sortBy,
+  sortOrder,
+  onSort,
 }) {
+
+  // =====================================================
+// SORT ICON
+// =====================================================
+
+const SortIcon = ({ field }) => {
+  // Not currently sorted
+  if (sortBy !== field) {
+    return (
+      <UnfoldMore
+        sx={{
+          fontSize: 18,
+          verticalAlign: "middle",
+          ml: 0.5,
+          opacity: 0.55,
+        }}
+      />
+    );
+  }
+
+  // ASC
+  if (sortOrder === "ASC") {
+    return (
+      <ArrowUpward
+        sx={{
+          fontSize: 18,
+          verticalAlign: "middle",
+          ml: 0.5,
+        }}
+      />
+    );
+  }
+
+  // DESC
+  return (
+    <ArrowDownward
+      sx={{
+        fontSize: 18,
+        verticalAlign: "middle",
+        ml: 0.5,
+      }}
+    />
+  );
+};
+
+// =====================================================
+// SORTABLE HEADER
+// =====================================================
+
+const SortableHeader = ({
+  label,
+  field,
+}) => {
+  const isActive = sortBy === field;
+
+  return (
+    <TableCell>
+      <Box
+        component="button"
+        onClick={() => onSort(field)}
+        sx={{
+          border: "none",
+          background: "transparent",
+          padding: 0,
+          margin: 0,
+          cursor: "pointer",
+
+          display: "inline-flex",
+          alignItems: "center",
+
+          fontFamily: "inherit",
+          fontSize: "inherit",
+          fontWeight: 700,
+
+          color: isActive
+            ? "primary.main"
+            : "inherit",
+
+          "&:hover": {
+            color: "primary.main",
+          },
+        }}
+      >
+        {label}
+
+        <SortIcon field={field} />
+      </Box>
+    </TableCell>
+  );
+};
+
   return (
     <TableContainer
       component={Paper}
@@ -42,17 +144,20 @@ function StoreTable({
               backgroundColor: "#f5f5f5",
             }}
           >
-            <TableCell sx={{ fontWeight: 700 }}>
-              Store
-            </TableCell>
+            <SortableHeader
+  label="Store"
+  field="name"
+/>
 
-            <TableCell sx={{ fontWeight: 700 }}>
-              Email
-            </TableCell>
+<SortableHeader
+  label="Email"
+  field="email"
+/>
 
-            <TableCell sx={{ fontWeight: 700 }}>
-              Address
-            </TableCell>
+<SortableHeader
+  label="Address"
+  field="address"
+/>
 
             <TableCell sx={{ fontWeight: 700 }}>
               Average Rating

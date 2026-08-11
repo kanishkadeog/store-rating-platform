@@ -46,6 +46,12 @@ const [totalStores, setTotalStores] = useState(0);
 
   const rowsPerPage = 5;
 
+  const [sortBy, setSortBy] =
+  useState("name");
+
+const [sortOrder, setSortOrder] =
+  useState("ASC");
+
   // Current user's ratings
   const [myRatings, setMyRatings] = useState([]);
 
@@ -66,8 +72,13 @@ const [totalStores, setTotalStores] = useState(0);
   // =====================================================
 
   useEffect(() => {
-    fetchStores();
-  }, [page, searchTerm]);
+  fetchStores();
+}, [
+  page,
+  searchTerm,
+  sortBy,
+  sortOrder,
+]);
 
   // =====================================================
   // LOAD MY RATINGS
@@ -77,6 +88,21 @@ const [totalStores, setTotalStores] = useState(0);
     fetchMyRatings();
   }, []);
 
+  const handleSort = (field) => {
+  if (sortBy === field) {
+    setSortOrder((prev) =>
+      prev === "ASC"
+        ? "DESC"
+        : "ASC"
+    );
+  } else {
+    setSortBy(field);
+    setSortOrder("ASC");
+  }
+
+  setPage(1);
+};
+
   // =====================================================
   // FETCH STORES
   // =====================================================
@@ -85,11 +111,13 @@ const [totalStores, setTotalStores] = useState(0);
     try {
       setLoading(true);
 
-      const response = await getAllStores({
-        page,
-        limit: rowsPerPage,
-        search: searchTerm,
-      });
+    const response = await getAllStores({
+  page,
+  limit: rowsPerPage,
+  search: searchTerm,
+  sortBy,
+  sortOrder,
+});
 
       console.log("User Stores Response:", response);
 
@@ -399,11 +427,14 @@ setTotalPages(response.data.totalPages || 1);
         />
 
         {/* STORE TABLE */}
-        <StoreTable
-          stores={stores}
-          onRate={handleRateClick}
-          getUserRating={getUserRating}
-        />
+       <StoreTable
+  stores={stores}
+  onRate={handleRate}
+  getUserRating={getUserRating}
+  sortBy={sortBy}
+  sortOrder={sortOrder}
+  onSort={handleSort}
+/>
 
         {/* PAGINATION */}
         { (
