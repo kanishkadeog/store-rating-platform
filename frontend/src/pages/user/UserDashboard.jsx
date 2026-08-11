@@ -38,7 +38,16 @@ function UserDashboard() {
 const [totalStores, setTotalStores] = useState(0);
 
   // Search
-  const [searchTerm, setSearchTerm] = useState("");
+// =====================================================
+// SEARCH
+// =====================================================
+
+// What user is currently typing
+const [searchInput, setSearchInput] = useState("");
+
+// Search value actually sent to backend
+const [searchTerm, setSearchTerm] = useState("");
+
 
   // Pagination
   const [page, setPage] = useState(1);
@@ -70,6 +79,21 @@ const [sortOrder, setSortOrder] =
   // =====================================================
   // LOAD STORES
   // =====================================================
+
+  // =====================================================
+// DEBOUNCE SEARCH
+// =====================================================
+
+useEffect(() => {
+  const timer = setTimeout(() => {
+    setSearchTerm(searchInput);
+    setPage(1);
+  }, 500);
+
+  return () => {
+    clearTimeout(timer);
+  };
+}, [searchInput]);
 
   useEffect(() => {
   fetchStores();
@@ -506,21 +530,20 @@ await fetchStores();
 
         {/* SEARCH */}
         <TextField
-          fullWidth
-          size="small"
-          placeholder="Search by store name or email..."
-          value={searchTerm}
-          onChange={(e) => {
-            setSearchTerm(e.target.value);
-            setPage(1);
-          }}
-          sx={{
-            mb: 2,
-            "& .MuiInputBase-root": {
-              fontSize: "14px",
-            },
-          }}
-        />
+  fullWidth
+  size="small"
+  placeholder="Search by store name or email..."
+  value={searchInput}
+  onChange={(e) => {
+    setSearchInput(e.target.value);
+  }}
+  sx={{
+    mb: 2,
+    "& .MuiInputBase-root": {
+      fontSize: "14px",
+    },
+  }}
+/>
 
         {/* STORE TABLE */}
        <StoreTable
