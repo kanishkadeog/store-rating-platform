@@ -19,14 +19,37 @@ const getAllStores = async (userId, query) => {
     totalPages: result.totalPages,
 
     stores: result.stores.map((store) => ({
+      // =====================================================
+      // STORE DETAILS
+      // =====================================================
+
       id: store.id,
+
       name: store.name,
+
       email: store.email,
+
       address: store.address,
+
+      // =====================================================
+      // AVERAGE RATING
+      // =====================================================
 
       averageRating: Number(
         store.dataValues.averageRating || 0
       ).toFixed(1),
+
+      // =====================================================
+      // STORE OWNER
+      // =====================================================
+
+      owner: store.owner
+        ? {
+            id: store.owner.id,
+            name: store.owner.name,
+            email: store.owner.email,
+          }
+        : null,
     })),
   };
 };
