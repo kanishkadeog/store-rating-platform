@@ -4,8 +4,13 @@ const ownerService = require("../services/owner.service");
 
 const getDashboard = async (req, res, next) => {
   try {
-    const dashboard = await ownerService.getDashboard(req.user.id);
 
+    const dashboard =
+  await ownerService.getDashboard(
+    req.user.id,
+    req.query
+  );
+  
     res.status(200).json({
       success: true,
       message: "Dashboard fetched successfully",
