@@ -76,10 +76,7 @@ const [sortOrder, setSortOrder] =
   // Dashboard loading
   const [loading, setLoading] = useState(true);
 
-  // =====================================================
-  // LOAD STORES
-  // =====================================================
-
+ 
   // =====================================================
 // DEBOUNCE SEARCH
 // =====================================================
@@ -88,12 +85,17 @@ useEffect(() => {
   const timer = setTimeout(() => {
     setSearchTerm(searchInput);
     setPage(1);
-  }, 500);
+  }, 1000);
 
   return () => {
     clearTimeout(timer);
   };
 }, [searchInput]);
+
+ // =====================================================
+  // LOAD STORES
+  // =====================================================
+
 
   useEffect(() => {
   fetchStores();
