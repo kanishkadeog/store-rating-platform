@@ -148,128 +148,329 @@ const deleteUser = async (id) => {
 /**
  * Get all stores for normal users
  */
+
+/**
+ * Get all stores for normal users
+ */
 const getAllStores = async (userId, query = {}) => {
-  const {
-    page = 1,
-    limit = 10,
-    search = "",
-    sortBy = "name",
-    sortOrder = "ASC",
-  } = query;
+    const {
+        page = 1,
+        limit = 10,
+        search = "",
+        sortBy = "name",
+        sortOrder = "ASC",
+    } = query;
 
-  const offset =
-    (Number(page) - 1) * Number(limit);
+    const offset =
+        (Number(page) - 1) * Number(limit);
 
-  // =====================================================
-  // SEARCH
-  // =====================================================
+    // =====================================================
+    // SEARCH
+    // =====================================================
 
-  const whereCondition = {
-    [Op.or]: [
-      {
-        name: {
-          [Op.like]: `%${search}%`,
-        },
-      },
-      {
-        address: {
-          [Op.like]: `%${search}%`,
-        },
-      },
-    ],
-  };
+    const whereCondition = {
+        [Op.or]: [
+            {
+                name: {
+                    [Op.like]: `%${search}%`,
+                },
+            },
+            {
+                address: {
+                    [Op.like]: `%${search}%`,
+                },
+            },
+        ],
+    };
 
-  // =====================================================
-  // SORTING VALIDATION
-  // =====================================================
+    // =====================================================
+    // SORTING VALIDATION
+    // =====================================================
 
-  const allowedSortFields = {
-    name: "name",
-    email: "email",
-    address: "address",
-    createdAt: "createdAt",
-  };
+    const allowedSortFields = {
+        name: "name",
+        email: "email",
+        address: "address",
+        createdAt: "createdAt",
+    };
+
+    const validSortOrder =
+        String(sortOrder).toUpperCase() === "ASC"
+            ? "ASC"
+            : "DESC";
+
+    // =====================================================
+    // FETCH STORES
+    // =====================================================
+
+    const { rows, count } =
+        await Store.findAndCountAll({
+            where: whereCondition,
+
+            // =================================================
+            // STORE FIELDS
+            // =================================================
+
+            attributes: [
+                "id",
+                "name",
+                "email",
+                "address",
+
+                [
+                    literal(
+                        "COALESCE(AVG(`ratings`.`rating`), 0)"
+                    ),
+                    "averageRating",
+                ],
+            ],
+
+            // =================================================
+            // OWNER + RATINGS
+            // =================================================
+
+            include: [
+                // =============================================
+                // STORE OWNER
+                // =============================================
+
+                {
+                    model: User,
+                    as: "owner",
+                    attributes: [
+                        "id",
+                        "name",
+                        "email",
+                    ],
+                    required: false,
+                },
+
+                // =============================================
+                // RATINGS
+                // =============================================
+
+                {
+                    model: Rating,
+                    as: "ratings",
+                    attributes: [],
+                    required: false,
+                },
+            ],
+
+            // =================================================
+            // GROUP
+            // =================================================
+
+            group: [
+                "Store.id",
+                "owner.id",
+            ],
+
+            // =================================================
+            // PAGINATION
+            // =================================================
+
+            limit: Number(limit),
+
+            offset,
+
+            // =================================================
+            // SORTING
+            // =================================================
+
+            order:
+                sortBy === "averageRating"
+                    ? [
+                        [
+                            literal(
+                                "COALESCE(AVG(`ratings`.`rating`), 0)"
+                            ),
+                            validSortOrder,
+                        ],
+                    ]
+                    : [
+                        [
+                            allowedSortFields[sortBy] || "name",
+                            validSortOrder,
+                        ],
+                    ],
+
+            subQuery: false,
+        });
+
+    // =====================================================
+    // COUNT
+    // =====================================================
+
+    const total = Array.isArray(count)
+        ? count.length
+        : count;
+
+    // =====================================================
+    // RESPONSE
+    // =====================================================
+
+    return {
+        total,
+
+        currentPage: Number(page),
+
+        totalPages: Math.ceil(
+            total / Number(limit)
+        ),
+
+        stores: rows,
+    };
+};
+
+
+//++++++++++++++++++++++++++++++++++++++++++++++
+// const getAllStores = async (userId, query = {}) => {
+//   const {
+//     page = 1,
+//     limit = 10,
+//     search = "",
+//     sortBy = "name",
+//     sortOrder = "ASC",
+//   } = query;
+
+//   const offset =
+//     (Number(page) - 1) * Number(limit);
+
+//   // =====================================================
+//   // SEARCH
+//   // =====================================================
+
+//   const whereCondition = {
+//     [Op.or]: [
+//       {
+//         name: {
+//           [Op.like]: `%${search}%`,
+//         },
+//       },
+//       {
+//         address: {
+//           [Op.like]: `%${search}%`,
+//         },
+//       },
+//     ],
+//   };
+
+//   // =====================================================
+//   // SORTING VALIDATION
+//   // =====================================================
+
+//   const allowedSortFields = {
+//     name: "name",
+//     email: "email",
+//     address: "address",
+//     createdAt: "createdAt",
+//   };
 
  
 
-  const validSortOrder =
-    String(sortOrder).toUpperCase() === "ASC"
-      ? "ASC"
-      : "DESC";
+//   const validSortOrder =
+//     String(sortOrder).toUpperCase() === "ASC"
+//       ? "ASC"
+//       : "DESC";
 
-  // =====================================================
-  // FETCH STORES
-  // =====================================================
+//   // =====================================================
+//   // FETCH STORES
+//   // =====================================================
 
-  const { rows, count } =
-    await Store.findAndCountAll({
-      where: whereCondition,
+//   const { rows, count } =
+//     await Store.findAndCountAll({
+//       where: whereCondition,
 
-      attributes: [
-  "id",
-  "name",
-  "email",
-  "address",
+//       attributes: [
+//   "id",
+//   "name",
+//   "email",
+//   "address",
 
-  [
-    literal(
-      "COALESCE(AVG(`ratings`.`rating`), 0)"
-    ),
-    "averageRating",
-  ],
-],
+//   [
+//     literal(
+//       "COALESCE(AVG(`ratings`.`rating`), 0)"
+//     ),
+//     "averageRating",
+//   ],
+//   ],
 
-      include: [
-        {
-          model: Rating,
-          as: "ratings",
-          attributes: [],
-          required: false,
-        },
-      ],
+//       include: [
+//     // =====================================================
+//     // STORE OWNER
+//     // =====================================================
 
-      group: ["Store.id"],
+//     {
+//         model: User,
+//         as: "owner",
+//         attributes: [
+//             "id",
+//             "name",
+//             "email",
+//         ],
+//         required: false,
+//     },
 
-      limit: Number(limit),
+//     // =====================================================
+//     // RATINGS
+//     // =====================================================
 
-      offset,
+//     {
+//         model: Rating,
+//         as: "ratings",
+//         attributes: [],
+//         required: false,
+//     },
+//  ],
 
-      order:
-  sortBy === "averageRating"
-    ? [
-        [
-           literal(
-            "COALESCE(AVG(`ratings`.`rating`), 0)"
-          ),
-          validSortOrder,
-        ],
-      ]
-    : [
-        [
-          allowedSortFields[sortBy] || "name",
-          validSortOrder,
-        ],
-      ],
+//  group: [
+//     "Store.id",
+//     "owner.id",
+//  ],
 
-      subQuery: false,
-    });
+//       limit: Number(limit),
 
-  const total = Array.isArray(count)
-    ? count.length
-    : count;
+//       offset,
 
-  return {
-    total,
+//       order:
+//   sortBy === "averageRating"
+//     ? [
+//         [
+//            literal(
+//             "COALESCE(AVG(`ratings`.`rating`), 0)"
+//           ),
+//           validSortOrder,
+//         ],
+//       ]
+//     : [
+//         [
+//           allowedSortFields[sortBy] || "name",
+//           validSortOrder,
+//         ],
+//       ],
 
-    currentPage: Number(page),
+//       subQuery: false,
+//     });
 
-    totalPages: Math.ceil(
-      total / Number(limit)
-    ),
+//   const total = Array.isArray(count)
+//     ? count.length
+//     : count;
 
-    stores: rows,
-  };
-};
+//   return {
+//     total,
+
+//     currentPage: Number(page),
+
+//     totalPages: Math.ceil(
+//       total / Number(limit)
+//     ),
+
+//     stores: rows,
+//   };
+// };
+
+//++++++++++++++++++++++
 
 module.exports = {
   findUserById,
