@@ -159,13 +159,15 @@ const SortableHeader = ({
   field="address"
 />
 
-            <TableCell sx={{ fontWeight: 700 }}>
-              Average Rating
-            </TableCell>
+          <SortableHeader
+  label="Average Rating"
+  field="averageRating"
+/>
 
-            <TableCell sx={{ fontWeight: 700 }}>
-              My Rating
-            </TableCell>
+<SortableHeader
+  label="My Rating"
+  field="myRating"
+/>
 
             <TableCell
               sx={{

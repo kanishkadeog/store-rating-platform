@@ -78,6 +78,7 @@ const [sortOrder, setSortOrder] =
   searchTerm,
   sortBy,
   sortOrder,
+  myRatings,
 ]);
 
   // =====================================================
@@ -107,38 +108,132 @@ const [sortOrder, setSortOrder] =
   // FETCH STORES
   // =====================================================
 
-  const fetchStores = async () => {
-    try {
-      setLoading(true);
+// =====================================================
+// FETCH STORES
+// =====================================================
+
+const fetchStores = async () => {
+  try {
+    setLoading(true);
+
+    // =====================================================
+    // SPECIAL CASE: SORT BY MY RATING
+    // =====================================================
+    // My Rating comes from /ratings/my, so backend cannot
+    // directly sort it.
+    // We fetch all stores first, sort them on frontend,
+    // and then apply pagination manually.
+    // =====================================================
+
+    if (sortBy === "myRating") {
+      const response = await getAllStores({
+        page: 1,
+        limit: 1000,
+        search: searchTerm,
+        sortBy: "name",
+        sortOrder: "ASC",
+      });
+
+      console.log(
+        "User Stores Response:",
+        response
+      );
+
+      let allStores =
+        response.data.stores || [];
+
+      // =====================================================
+      // SORT BY LOGGED-IN USER'S RATING
+      // =====================================================
+
+      allStores.sort((a, b) => {
+        const ratingA =
+          Number(getUserRating(a.id)) || 0;
+
+        const ratingB =
+          Number(getUserRating(b.id)) || 0;
+
+        if (sortOrder === "ASC") {
+          return ratingA - ratingB;
+        }
+
+        return ratingB - ratingA;
+      });
+
+      // =====================================================
+      // MANUAL PAGINATION
+      // =====================================================
+
+      const start =
+        (page - 1) * rowsPerPage;
+
+      const end =
+        start + rowsPerPage;
+
+      const paginatedStores =
+        allStores.slice(start, end);
+
+      // =====================================================
+      // UPDATE STATE
+      // =====================================================
+
+      setStores(paginatedStores);
+
+      setTotalStores(allStores.length);
+
+      setTotalPages(
+        Math.ceil(
+          allStores.length / rowsPerPage
+        )
+      );
+
+      return;
+    }
+
+    // =====================================================
+    // NORMAL BACKEND SORTING
+    // =====================================================
 
     const response = await getAllStores({
-  page,
-  limit: rowsPerPage,
-  search: searchTerm,
-  sortBy,
-  sortOrder,
-});
+      page,
+      limit: rowsPerPage,
+      search: searchTerm,
+      sortBy,
+      sortOrder,
+    });
 
-      console.log("User Stores Response:", response);
+    console.log(
+      "User Stores Response:",
+      response
+    );
 
-     setStores(response.data.stores || []);
+    setStores(
+      response.data.stores || []
+    );
 
-// Total stores across all pages
-setTotalStores(response.data.total || 0);
+    setTotalStores(
+      response.data.total || 0
+    );
 
-setTotalPages(response.data.totalPages || 1);
+    setTotalPages(
+      response.data.totalPages || 1
+    );
 
-    } catch (error) {
-      console.error("User Stores Error:", error);
+  } catch (error) {
+    console.error(
+      "User Stores Error:",
+      error
+    );
 
-      toast.error(
-        error.response?.data?.message ||
-          "Failed to load stores"
-      );
-    } finally {
-      setLoading(false);
-    }
-  };
+    toast.error(
+      error.response?.data?.message ||
+        "Failed to load stores"
+    );
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   // =====================================================
   // FETCH CURRENT USER'S RATINGS
@@ -240,11 +335,12 @@ setTotalPages(response.data.totalPages || 1);
       setOpenRate(false);
       setSelectedStore(null);
 
-      // Refresh stores
-      await fetchStores();
+      // Refresh user's ratings FIRST
+await fetchMyRatings();
 
-      // Refresh user's ratings
-      await fetchMyRatings();
+// Then refresh stores
+await fetchStores();
+
     } catch (error) {
       console.error("Rating Error:", error);
 
@@ -429,7 +525,7 @@ setTotalPages(response.data.totalPages || 1);
         {/* STORE TABLE */}
        <StoreTable
   stores={stores}
-  onRate={handleRate}
+  onRate={handleRateClick}
   getUserRating={getUserRating}
   sortBy={sortBy}
   sortOrder={sortOrder}
