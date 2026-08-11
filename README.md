@@ -21,6 +21,9 @@ https://store-rating-platform-e2h6.onrender.com
 ### ❤️ API Health Check
 https://store-rating-platform-e2h6.onrender.com/api/health
 
+### DataBase
+https://railway.com/project/7c148663-606c-41ff-8e92-54c649d5f6ce/service/4fe2c80c-a013-4be9-9482-1198c7e60939/database?environmentId=aeb28f9a-6983-43d6-81f8-ecad9a8e5344
+
 
 ---
 
