@@ -88,7 +88,7 @@ useEffect(() => {
   const timer = setTimeout(() => {
     setSearchTerm(searchInput);
     setPage(1);
-  }, 5000);
+  }, 1000);
 
   return () => {
     clearTimeout(timer);
