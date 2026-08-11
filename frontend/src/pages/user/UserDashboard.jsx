@@ -258,6 +258,25 @@ const sortedStores = [...filteredStores].sort(
     }
 
     // -----------------------------------------
+// STORE OWNER
+// -----------------------------------------
+
+if (sortBy === "owner") {
+  const valueA =
+    String(a.owner?.name || "").toLowerCase();
+
+  const valueB =
+    String(b.owner?.name || "").toLowerCase();
+
+  const result =
+    valueA.localeCompare(valueB);
+
+  return sortOrder === "ASC"
+    ? result
+    : -result;
+}
+
+    // -----------------------------------------
     // EMAIL
     // -----------------------------------------
 

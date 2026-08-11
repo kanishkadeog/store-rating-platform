@@ -150,6 +150,11 @@ const SortableHeader = ({
 />
 
 <SortableHeader
+  label="Store Owner"
+  field="owner"
+/>
+
+<SortableHeader
   label="Email"
   field="email"
 />
@@ -188,7 +193,7 @@ const SortableHeader = ({
           {stores.length === 0 ? (
             <TableRow>
               <TableCell
-                colSpan={6}
+                colSpan={7}
                 align="center"
                 sx={{
                   py: 3,
@@ -216,6 +221,15 @@ const SortableHeader = ({
                   >
                     {store.name}
                   </TableCell>
+
+                  {/* STORE OWNER */}
+                  <TableCell
+                      sx={{
+                           whiteSpace: "nowrap",
+                       }}
+                  >
+                   {store.owner?.name || "N/A"}
+                   </TableCell>
 
                   {/* EMAIL */}
                   <TableCell
