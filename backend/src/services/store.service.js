@@ -1,11 +1,14 @@
 //store-rating-platform/backend/src/services/store.service.js
 
+
 const storeRepository = require("../repositories/store.repository");
 const ratingRepository = require("../repositories/rating.repository");
 
 const getAllStores = async (query, userId) => {
+  // =====================================================
+  // STEP 1: GET STORES
+  // =====================================================
 
-  // Step 1: Get stores
   const storeData = await storeRepository.getStores(query);
 
   const stores = storeData.stores;
@@ -15,47 +18,99 @@ const getAllStores = async (query, userId) => {
     return storeData;
   }
 
-  // Step 2: Extract store IDs
+  // =====================================================
+  // STEP 2: EXTRACT STORE IDS
+  // =====================================================
+
   const storeIds = stores.map((store) => store.id);
 
-  // Step 3: Get average ratings and user ratings
-  const [averageRatings, userRatings] = await Promise.all([
-    ratingRepository.getAverageRatings(storeIds),
-    ratingRepository.getUserRatings(storeIds, userId),
-  ]);
+  // =====================================================
+  // STEP 3: GET RATINGS
+  // =====================================================
 
-  // Step 4: Convert arrays to maps for fast lookup
+  const [averageRatings, userRatings] =
+    await Promise.all([
+      ratingRepository.getAverageRatings(
+        storeIds
+      ),
+
+      ratingRepository.getUserRatings(
+        storeIds,
+        userId
+      ),
+    ]);
+
+  // =====================================================
+  // STEP 4: CREATE RATING MAPS
+  // =====================================================
+
   const averageRatingMap = {};
 
   averageRatings.forEach((item) => {
-    averageRatingMap[item.storeId] = Number(item.averageRating).toFixed(1);
+    averageRatingMap[item.storeId] =
+      Number(item.averageRating).toFixed(1);
   });
 
   const userRatingMap = {};
 
   userRatings.forEach((item) => {
-    userRatingMap[item.storeId] = item.rating;
+    userRatingMap[item.storeId] =
+      item.rating;
   });
 
-  // Step 5: Merge ratings into each store
-  const updatedStores = stores.map((store) => {
+  // =====================================================
+  // STEP 5: MERGE STORE + OWNER + RATINGS
+  // =====================================================
 
+  const updatedStores = stores.map((store) => {
     const plainStore = store.toJSON();
 
     return {
-      ...plainStore,
+      id: plainStore.id,
+
+      name: plainStore.name,
+
+      email: plainStore.email,
+
+      address: plainStore.address,
+
+      ownerId: plainStore.ownerId,
+
+      // -----------------------------------------------
+      // OWNER DETAILS
+      // -----------------------------------------------
+
+      owner: plainStore.owner
+        ? {
+            id: plainStore.owner.id,
+
+            name: plainStore.owner.name,
+
+            email: plainStore.owner.email,
+          }
+        : null,
+
+      // -----------------------------------------------
+      // RATINGS
+      // -----------------------------------------------
 
       averageRating:
-        averageRatingMap[store.id] || "0.0",
+        averageRatingMap[store.id] ||
+        "0.0",
 
       userRating:
-        userRatingMap[store.id] || null,
+        userRatingMap[store.id] ||
+        null,
     };
   });
 
-  // Step 6: Return final response
+  // =====================================================
+  // STEP 6: FINAL RESPONSE
+  // =====================================================
+
   return {
     ...storeData,
+
     stores: updatedStores,
   };
 };
@@ -64,15 +119,69 @@ module.exports = {
   getAllStores,
 };
 
-//===========================================
-
-
+//-------------------------------------------------
 // const storeRepository = require("../repositories/store.repository");
+// const ratingRepository = require("../repositories/rating.repository");
 
 // const getAllStores = async (query, userId) => {
-//   return await storeRepository.getStores(query, userId);
+
+//   // Step 1: Get stores
+//   const storeData = await storeRepository.getStores(query);
+
+//   const stores = storeData.stores;
+
+//   // No stores found
+//   if (stores.length === 0) {
+//     return storeData;
+//   }
+
+//   // Step 2: Extract store IDs
+//   const storeIds = stores.map((store) => store.id);
+
+//   // Step 3: Get average ratings and user ratings
+//   const [averageRatings, userRatings] = await Promise.all([
+//     ratingRepository.getAverageRatings(storeIds),
+//     ratingRepository.getUserRatings(storeIds, userId),
+//   ]);
+
+//   // Step 4: Convert arrays to maps for fast lookup
+//   const averageRatingMap = {};
+
+//   averageRatings.forEach((item) => {
+//     averageRatingMap[item.storeId] = Number(item.averageRating).toFixed(1);
+//   });
+
+//   const userRatingMap = {};
+
+//   userRatings.forEach((item) => {
+//     userRatingMap[item.storeId] = item.rating;
+//   });
+
+//   // Step 5: Merge ratings into each store
+//   const updatedStores = stores.map((store) => {
+
+//     const plainStore = store.toJSON();
+
+//     return {
+//       ...plainStore,
+
+//       averageRating:
+//         averageRatingMap[store.id] || "0.0",
+
+//       userRating:
+//         userRatingMap[store.id] || null,
+//     };
+//   });
+
+//   // Step 6: Return final response
+//   return {
+//     ...storeData,
+//     stores: updatedStores,
+//   };
 // };
 
 // module.exports = {
 //   getAllStores,
 // };
+
+// //===========================================
