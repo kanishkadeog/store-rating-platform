@@ -28,11 +28,14 @@ import {
 } from "../../services/rating.service";
 
 function UserDashboard() {
+  
   // =====================================================
   // STATE
   // =====================================================
 
-  const [stores, setStores] = useState([]);
+const [stores, setStores] = useState([]);
+const [allStores, setAllStores] = useState([]);
+
 
   // Total number of stores in database
 const [totalStores, setTotalStores] = useState(0);
@@ -100,8 +103,8 @@ useEffect(() => {
   useEffect(() => {
   fetchStores();
 }, [
-  page,
-  searchTerm,
+  // page,
+  // searchTerm,
   sortBy,
   sortOrder,
   myRatings,
@@ -138,94 +141,145 @@ useEffect(() => {
 // FETCH STORES
 // =====================================================
 
+//++++++++++++++++++++++++++++++++++++++++++++++++
+// const fetchStores = async () => {
+//   try {
+//     setLoading(true);
+
+//     // =====================================================
+//     // SPECIAL CASE: SORT BY MY RATING
+//     // =====================================================
+//     // My Rating comes from /ratings/my, so backend cannot
+//     // directly sort it.
+//     // We fetch all stores first, sort them on frontend,
+//     // and then apply pagination manually.
+//     // =====================================================
+
+//     if (sortBy === "myRating") {
+//       const response = await getAllStores({
+//         page: 1,
+//         limit: 1000,
+//         search: "",
+//         sortBy: "name",
+//         sortOrder: "ASC",
+//       });
+
+//       console.log(
+//         "User Stores Response:",
+//         response
+//       );
+
+//       let allStores =
+//         response.data.stores || [];
+
+//       // =====================================================
+//       // SORT BY LOGGED-IN USER'S RATING
+//       // =====================================================
+
+//       allStores.sort((a, b) => {
+//         const ratingA =
+//           Number(getUserRating(a.id)) || 0;
+
+//         const ratingB =
+//           Number(getUserRating(b.id)) || 0;
+
+//         if (sortOrder === "ASC") {
+//           return ratingA - ratingB;
+//         }
+
+//         return ratingB - ratingA;
+//       });
+
+//       // =====================================================
+//       // MANUAL PAGINATION
+//       // =====================================================
+
+//       const start =
+//         (page - 1) * rowsPerPage;
+
+//       const end =
+//         start + rowsPerPage;
+
+//       const paginatedStores =
+//         allStores.slice(start, end);
+
+//       // =====================================================
+//       // UPDATE STATE
+//       // =====================================================
+
+//       setStores(paginatedStores);
+
+//       setTotalStores(allStores.length);
+
+//       setTotalPages(
+//         Math.ceil(
+//           allStores.length / rowsPerPage
+//         )
+//       );
+
+//       return;
+//     }
+
+//     // =====================================================
+//     // NORMAL BACKEND SORTING
+//     // =====================================================
+
+//     const response = await getAllStores({
+//       page,
+//       limit: rowsPerPage,
+//       search: "",
+//       sortBy,
+//       sortOrder,
+//     });
+
+//     console.log(
+//       "User Stores Response:",
+//       response
+//     );
+
+//     setStores(
+//       response.data.stores || []
+//     );
+
+//     setTotalStores(
+//       response.data.total || 0
+//     );
+
+//     setTotalPages(
+//       response.data.totalPages || 1
+//     );
+
+//   } catch (error) {
+//     console.error(
+//       "User Stores Error:",
+//       error
+//     );
+
+//     toast.error(
+//       error.response?.data?.message ||
+//         "Failed to load stores"
+//     );
+//   } finally {
+//     setLoading(false);
+//   }
+// };
+
+//+++++++++++++++++++++++++++++++++
+
+// =====================================================
+// FETCH ALL STORES
+// =====================================================
+
 const fetchStores = async () => {
   try {
     setLoading(true);
 
-    // =====================================================
-    // SPECIAL CASE: SORT BY MY RATING
-    // =====================================================
-    // My Rating comes from /ratings/my, so backend cannot
-    // directly sort it.
-    // We fetch all stores first, sort them on frontend,
-    // and then apply pagination manually.
-    // =====================================================
-
-    if (sortBy === "myRating") {
-      const response = await getAllStores({
-        page: 1,
-        limit: 1000,
-        search: searchTerm,
-        sortBy: "name",
-        sortOrder: "ASC",
-      });
-
-      console.log(
-        "User Stores Response:",
-        response
-      );
-
-      let allStores =
-        response.data.stores || [];
-
-      // =====================================================
-      // SORT BY LOGGED-IN USER'S RATING
-      // =====================================================
-
-      allStores.sort((a, b) => {
-        const ratingA =
-          Number(getUserRating(a.id)) || 0;
-
-        const ratingB =
-          Number(getUserRating(b.id)) || 0;
-
-        if (sortOrder === "ASC") {
-          return ratingA - ratingB;
-        }
-
-        return ratingB - ratingA;
-      });
-
-      // =====================================================
-      // MANUAL PAGINATION
-      // =====================================================
-
-      const start =
-        (page - 1) * rowsPerPage;
-
-      const end =
-        start + rowsPerPage;
-
-      const paginatedStores =
-        allStores.slice(start, end);
-
-      // =====================================================
-      // UPDATE STATE
-      // =====================================================
-
-      setStores(paginatedStores);
-
-      setTotalStores(allStores.length);
-
-      setTotalPages(
-        Math.ceil(
-          allStores.length / rowsPerPage
-        )
-      );
-
-      return;
-    }
-
-    // =====================================================
-    // NORMAL BACKEND SORTING
-    // =====================================================
-
     const response = await getAllStores({
-      page,
-      limit: rowsPerPage,
-      search: searchTerm,
-      sortBy,
-      sortOrder,
+      page: 1,
+      limit: 1000,
+      search: "",
+      sortBy: "name",
+      sortOrder: "ASC",
     });
 
     console.log(
@@ -233,17 +287,10 @@ const fetchStores = async () => {
       response
     );
 
-    setStores(
-      response.data.stores || []
-    );
+    const fetchedStores =
+      response.data.stores || [];
 
-    setTotalStores(
-      response.data.total || 0
-    );
-
-    setTotalPages(
-      response.data.totalPages || 1
-    );
+    setAllStores(fetchedStores);
 
   } catch (error) {
     console.error(
@@ -294,6 +341,145 @@ const fetchStores = async () => {
     return rating?.rating || null;
   };
 
+  // =====================================================
+// FILTER STORES LOCALLY
+// =====================================================
+
+const filteredStores = allStores.filter((store) => {
+  const keyword = searchTerm.toLowerCase();
+
+  return (
+    store.name
+      ?.toLowerCase()
+      .includes(keyword) ||
+
+    store.email
+      ?.toLowerCase()
+      .includes(keyword) ||
+
+    store.address
+      ?.toLowerCase()
+      .includes(keyword)
+  );
+});
+
+// =====================================================
+// SORT STORES LOCALLY
+// =====================================================
+
+const sortedStores = [...filteredStores].sort(
+  (a, b) => {
+
+    // -----------------------------------------
+    // STORE NAME
+    // -----------------------------------------
+
+    if (sortBy === "name") {
+      const valueA =
+        String(a.name || "").toLowerCase();
+
+      const valueB =
+        String(b.name || "").toLowerCase();
+
+      const result =
+        valueA.localeCompare(valueB);
+
+      return sortOrder === "ASC"
+        ? result
+        : -result;
+    }
+
+    // -----------------------------------------
+    // EMAIL
+    // -----------------------------------------
+
+    if (sortBy === "email") {
+      const valueA =
+        String(a.email || "").toLowerCase();
+
+      const valueB =
+        String(b.email || "").toLowerCase();
+
+      const result =
+        valueA.localeCompare(valueB);
+
+      return sortOrder === "ASC"
+        ? result
+        : -result;
+    }
+
+    // -----------------------------------------
+    // ADDRESS
+    // -----------------------------------------
+
+    if (sortBy === "address") {
+      const valueA =
+        String(a.address || "").toLowerCase();
+
+      const valueB =
+        String(b.address || "").toLowerCase();
+
+      const result =
+        valueA.localeCompare(valueB);
+
+      return sortOrder === "ASC"
+        ? result
+        : -result;
+    }
+
+    // -----------------------------------------
+    // AVERAGE RATING
+    // -----------------------------------------
+
+    if (sortBy === "averageRating") {
+      const ratingA =
+        Number(a.averageRating) || 0;
+
+      const ratingB =
+        Number(b.averageRating) || 0;
+
+      return sortOrder === "ASC"
+        ? ratingA - ratingB
+        : ratingB - ratingA;
+    }
+
+    // -----------------------------------------
+    // MY RATING
+    // -----------------------------------------
+
+    if (sortBy === "myRating") {
+      const ratingA =
+        Number(getUserRating(a.id)) || 0;
+
+      const ratingB =
+        Number(getUserRating(b.id)) || 0;
+
+      return sortOrder === "ASC"
+        ? ratingA - ratingB
+        : ratingB - ratingA;
+    }
+
+    return 0;
+  }
+);
+
+// =====================================================
+// PAGINATION
+// =====================================================
+
+const totalStoresCount =
+  sortedStores.length;
+
+const calculatedTotalPages =
+  Math.ceil(
+    totalStoresCount / rowsPerPage
+  );
+
+const paginatedStores =
+  sortedStores.slice(
+    (page - 1) * rowsPerPage,
+    page * rowsPerPage
+  );
 
     // =====================================================
   // CALCULATE USER RATING STATISTICS
@@ -531,13 +717,14 @@ await fetchStores();
 
 
         {/* SEARCH */}
-        <TextField
+       <TextField
   fullWidth
   size="small"
-  placeholder="Search by store name or email..."
-  value={searchInput}
+  placeholder="Search by store name, email or address..."
+  value={searchTerm}
   onChange={(e) => {
-    setSearchInput(e.target.value);
+    setSearchTerm(e.target.value);
+    setPage(1);
   }}
   sx={{
     mb: 2,
@@ -549,8 +736,8 @@ await fetchStores();
 
         {/* STORE TABLE */}
        <StoreTable
-  stores={stores}
-  onRate={handleRateClick}
+stores={paginatedStores}  
+onRate={handleRateClick}
   getUserRating={getUserRating}
   sortBy={sortBy}
   sortOrder={sortOrder}
@@ -569,14 +756,14 @@ await fetchStores();
             }}
           >
             <Pagination
-              count={totalPages}
-              page={page}
-              color="primary"
-              size="small"
-              onChange={(event, value) => {
-                setPage(value);
-              }}
-            />
+  count={calculatedTotalPages}
+  page={page}
+  color="primary"
+  size="small"
+  onChange={(event, value) => {
+    setPage(value);
+  }}
+/>
           </Box>
         )}
       </Box>
