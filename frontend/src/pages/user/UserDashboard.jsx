@@ -523,8 +523,8 @@ await fetchStores();
         fontWeight="bold"
         sx={{ mt: 1 }}
       >
-        {/* {totalStores} */}
-       {totalStoresCount}
+        {totalStores}
+       {/* {totalStoresCount} */}
       </Typography>
     </Paper>
   </Grid>
