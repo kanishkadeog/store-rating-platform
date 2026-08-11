@@ -142,88 +142,7 @@ const deleteUser = async (id) => {
   return true;
 };
 
-/**
- * Get all stores for normal users
- */
-//======================================================
-// const getAllStores = async (userId, query) => {
-//   const {
-//     page = 1,
-//     limit = 10,
-//     search = "",
-//   } = query;
 
-//   const offset =
-//     (Number(page) - 1) * Number(limit);
-
-//   const { rows, count } =
-//     await Store.findAndCountAll({
-//       where: {
-//         [Op.or]: [
-//           {
-//             name: {
-//               [Op.like]: `%${search}%`,
-//             },
-//           },
-//           {
-//             address: {
-//               [Op.like]: `%${search}%`,
-//             },
-//           },
-//         ],
-//       },
-
-//       attributes: [
-//         "id",
-//         "name",
-//         "email",
-//         "address",
-
-//         [
-//           fn(
-//             "AVG",
-//             col("ratings.rating")
-//           ),
-//           "averageRating",
-//         ],
-//       ],
-
-//       include: [
-//         {
-//           model: Rating,
-//           as: "ratings",
-//           attributes: [],
-//           required: false,
-//         },
-//       ],
-
-//       group: ["Store.id"],
-
-//       limit: Number(limit),
-
-//       offset,
-
-//       order: [["createdAt", "DESC"]],
-
-//       subQuery: false,
-//     });
-
-//   return {
-//     total: Array.isArray(count)
-//       ? count.length
-//       : count,
-
-//     currentPage: Number(page),
-
-//     totalPages: Math.ceil(
-//       (Array.isArray(count)
-//         ? count.length
-//         : count) / Number(limit)
-//     ),
-
-//     stores: rows,
-//   };
-// };
 //===================================================
 
 /**
@@ -271,8 +190,7 @@ const getAllStores = async (userId, query = {}) => {
     createdAt: "createdAt",
   };
 
-  const validSortBy =
-    allowedSortFields[sortBy] || "name";
+ 
 
   const validSortOrder =
     String(sortOrder).toUpperCase() === "ASC"
@@ -288,19 +206,18 @@ const getAllStores = async (userId, query = {}) => {
       where: whereCondition,
 
       attributes: [
-        "id",
-        "name",
-        "email",
-        "address",
+  "id",
+  "name",
+  "email",
+  "address",
 
-        [
-          fn(
-            "AVG",
-            col("ratings.rating")
-          ),
-          "averageRating",
-        ],
-      ],
+  [
+    literal(
+      "COALESCE(AVG(`ratings`.`rating`), 0)"
+    ),
+    "averageRating",
+  ],
+],
 
       include: [
         {
@@ -317,8 +234,21 @@ const getAllStores = async (userId, query = {}) => {
 
       offset,
 
-      order: [
-        [validSortBy, validSortOrder],
+      order:
+  sortBy === "averageRating"
+    ? [
+        [
+           literal(
+            "COALESCE(AVG(`ratings`.`rating`), 0)"
+          ),
+          validSortOrder,
+        ],
+      ]
+    : [
+        [
+          allowedSortFields[sortBy] || "name",
+          validSortOrder,
+        ],
       ],
 
       subQuery: false,
