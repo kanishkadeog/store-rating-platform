@@ -64,197 +64,485 @@ const hasStoresByOwner = async (ownerId) => {
 // GET STORES WITH PAGINATION, SEARCH AND SORTING
 // =====================================================
 
+// =====================================================
+// GET STORES WITH PAGINATION, SEARCH AND SORTING
+// =====================================================
+
 const getStores = async (query = {}) => {
-  const {
-    page = 1,
-    limit = 10,
-    search = "",
-    sortBy = "name",
-    order = "ASC",
-  } = query;
 
-  const offset =
-    (Number(page) - 1) * Number(limit);
+    const {
+        page = 1,
+        limit = 10,
+        search = "",
+        sortBy = "name",
+        order = "ASC",
+    } = query;
 
-  // =====================================================
-  // SEARCH CONDITIONS
-  // =====================================================
+    const offset =
+        (Number(page) - 1) * Number(limit);
 
-  const whereCondition = {};
 
-  if (search) {
-    whereCondition[Op.or] = [
-      {
-        name: {
-          [Op.like]: `%${search}%`,
-        },
-      },
+    // =====================================================
+    // SEARCH
+    // =====================================================
 
-      {
-        email: {
-          [Op.like]: `%${search}%`,
-        },
-      },
+    const whereCondition = {};
 
-      {
-        address: {
-          [Op.like]: `%${search}%`,
-        },
-      },
+    if (search) {
 
-      {
-        "$owner.name$": {
-          [Op.like]: `%${search}%`,
-        },
-      },
+        whereCondition[Op.or] = [
 
-      {
-        "$owner.email$": {
-          [Op.like]: `%${search}%`,
-        },
-      },
-    ];
-  }
+            {
+                name: {
+                    [Op.like]: `%${search}%`,
+                },
+            },
 
-  // =====================================================
-  // SORTING VALIDATION
-  // =====================================================
+            {
+                email: {
+                    [Op.like]: `%${search}%`,
+                },
+            },
 
-  const allowedSortFields = [
-    "name",
-    "email",
-    "address",
-    "owner",
-    "averageRating",
-    "createdAt",
-  ];
+            {
+                address: {
+                    [Op.like]: `%${search}%`,
+                },
+            },
 
-  const validSortBy = allowedSortFields.includes(sortBy)
-    ? sortBy
-    : "name";
+            {
+                "$owner.name$": {
+                    [Op.like]: `%${search}%`,
+                },
+            },
 
-  const validOrder =
-    String(order).toUpperCase() === "ASC"
-      ? "ASC"
-      : "DESC";
+            {
+                "$owner.email$": {
+                    [Op.like]: `%${search}%`,
+                },
+            },
 
-  // =====================================================
-  // SORTING CONFIGURATION
-  // =====================================================
+        ];
+    }
 
-  let orderClause;
 
-  if (validSortBy === "owner") {
-    // Sort using owner's name
-    orderClause = [
-      [
-        {
-          model: User,
-          as: "owner",
-        },
-        "name",
-        validOrder,
-      ],
-    ];
-  } else if (validSortBy === "averageRating") {
-    // Sort using calculated average rating
-    orderClause = [
-      [
-        literal("averageRating"),
-        validOrder,
-      ],
-    ];
-  } else {
-    // Normal Store columns
-    orderClause = [
-      [
-        validSortBy,
-        validOrder,
-      ],
-    ];
-  }
+    // =====================================================
+    // SORTING
+    // =====================================================
 
-  // =====================================================
-  // FETCH STORES
-  // =====================================================
-
-  const { count, rows } =
-    await Store.findAndCountAll({
-      where: whereCondition,
-
-      attributes: [
-        "id",
+    const allowedSortFields = [
         "name",
         "email",
         "address",
-        "ownerId",
+        "owner",
+        "averageRating",
+        "createdAt",
+    ];
 
-        [
-          fn(
-            "AVG",
-            col("ratings.rating")
-          ),
-          "averageRating",
-        ],
-      ],
 
-      include: [
-        {
-          model: User,
-          as: "owner",
+    const validSortBy =
+        allowedSortFields.includes(sortBy)
+            ? sortBy
+            : "name";
 
-          attributes: [
-            "id",
-            "name",
-            "email",
-          ],
-        },
 
-        {
-          model: Rating,
-          as: "ratings",
+    const validOrder =
+        String(order).toUpperCase() === "DESC"
+            ? "DESC"
+            : "ASC";
 
-          attributes: [],
 
-          required: false,
-        },
-      ],
+    let orderClause;
 
-      group: ["Store.id", "owner.id"],
 
-      order: orderClause,
+    // Sort by owner name
+    if (validSortBy === "owner") {
 
-      limit: Number(limit),
+        orderClause = [
+            [
+                {
+                    model: User,
+                    as: "owner",
+                },
 
-      offset,
+                "name",
 
-      subQuery: false,
+                validOrder,
+            ],
+        ];
+
+    }
+
+    // Sort by average rating
+    else if (validSortBy === "averageRating") {
+
+        orderClause = [
+            [
+                literal("averageRating"),
+                validOrder,
+            ],
+        ];
+
+    }
+
+    // Normal store column
+    else {
+
+        orderClause = [
+            [
+                validSortBy,
+                validOrder,
+            ],
+        ];
+
+    }
+
+
+    // =====================================================
+    // FETCH STORES
+    // =====================================================
+
+    const { count, rows } =
+        await Store.findAndCountAll({
+
+            where: whereCondition,
+
+
+            // =================================================
+            // STORE FIELDS
+            // =================================================
+
+            attributes: [
+                "id",
+                "name",
+                "email",
+                "address",
+                "ownerId",
+
+                [
+                    fn(
+                        "AVG",
+                        col("ratings.rating")
+                    ),
+
+                    "averageRating",
+                ],
+            ],
+
+
+            // =================================================
+            // OWNER
+            // =================================================
+
+            include: [
+
+                {
+                    model: User,
+
+                    as: "owner",
+
+                    attributes: [
+                        "id",
+                        "name",
+                        "email",
+                    ],
+
+                    required: false,
+                },
+
+
+                // =================================================
+                // RATINGS
+                // =================================================
+
+                {
+                    model: Rating,
+
+                    as: "ratings",
+
+                    attributes: [],
+
+                    required: false,
+                },
+
+            ],
+
+
+            // =================================================
+            // GROUP
+            // =================================================
+
+            group: [
+                "Store.id",
+                "owner.id",
+            ],
+
+
+            // =================================================
+            // ORDER
+            // =================================================
+
+            order: orderClause,
+
+
+            limit: Number(limit),
+
+            offset,
+
+            subQuery: false,
+        });
+
+
+    // =====================================================
+    // COUNT
+    // =====================================================
+
+    const totalStores =
+        Array.isArray(count)
+            ? count.length
+            : count;
+
+
+    // =====================================================
+    // DEBUG
+    // =====================================================
+
+    console.log(
+        "========== STORES FROM DATABASE =========="
+    );
+
+
+    rows.forEach((store) => {
+
+        console.log(
+            store.toJSON()
+        );
+
     });
 
-  // =====================================================
-  // COUNT
-  // =====================================================
 
-  const totalStores = Array.isArray(count)
-    ? count.length
-    : count;
+    console.log(
+        "==========================================="
+    );
 
-  // =====================================================
-  // RESPONSE
-  // =====================================================
 
-  return {
-    totalStores,
+    // =====================================================
+    // RESPONSE
+    // =====================================================
 
-    currentPage: Number(page),
+    return {
 
-    totalPages: Math.ceil(
-      totalStores / Number(limit)
-    ),
+        totalStores,
 
-    stores: rows,
-  };
+        currentPage:
+            Number(page),
+
+        totalPages:
+            Math.ceil(
+                totalStores /
+                Number(limit)
+            ),
+
+        stores: rows,
+
+    };
 };
+
+//++++++++++++++++++++++++++++++++++++++
+// const getStores = async (query = {}) => {
+//   const {
+//     page = 1,
+//     limit = 10,
+//     search = "",
+//     sortBy = "name",
+//     order = "ASC",
+//   } = query;
+
+//   const offset =
+//     (Number(page) - 1) * Number(limit);
+
+//   // =====================================================
+//   // SEARCH CONDITIONS
+//   // =====================================================
+
+//   const whereCondition = {};
+
+//   if (search) {
+//     whereCondition[Op.or] = [
+//       {
+//         name: {
+//           [Op.like]: `%${search}%`,
+//         },
+//       },
+
+//       {
+//         email: {
+//           [Op.like]: `%${search}%`,
+//         },
+//       },
+
+//       {
+//         address: {
+//           [Op.like]: `%${search}%`,
+//         },
+//       },
+
+//       {
+//         "$owner.name$": {
+//           [Op.like]: `%${search}%`,
+//         },
+//       },
+
+//       {
+//         "$owner.email$": {
+//           [Op.like]: `%${search}%`,
+//         },
+//       },
+//     ];
+//   }
+
+//   // =====================================================
+//   // SORTING VALIDATION
+//   // =====================================================
+
+//   const allowedSortFields = [
+//     "name",
+//     "email",
+//     "address",
+//     "owner",
+//     "averageRating",
+//     "createdAt",
+//   ];
+
+//   const validSortBy = allowedSortFields.includes(sortBy)
+//     ? sortBy
+//     : "name";
+
+//   const validOrder =
+//     String(order).toUpperCase() === "ASC"
+//       ? "ASC"
+//       : "DESC";
+
+//   // =====================================================
+//   // SORTING CONFIGURATION
+//   // =====================================================
+
+//   let orderClause;
+
+//   if (validSortBy === "owner") {
+//     // Sort using owner's name
+//     orderClause = [
+//       [
+//         {
+//           model: User,
+//           as: "owner",
+//         },
+//         "name",
+//         validOrder,
+//       ],
+//     ];
+//   } else if (validSortBy === "averageRating") {
+//     // Sort using calculated average rating
+//     orderClause = [
+//       [
+//         literal("averageRating"),
+//         validOrder,
+//       ],
+//     ];
+//   } else {
+//     // Normal Store columns
+//     orderClause = [
+//       [
+//         validSortBy,
+//         validOrder,
+//       ],
+//     ];
+//   }
+
+//   // =====================================================
+//   // FETCH STORES
+//   // =====================================================
+
+//   const { count, rows } =
+//     await Store.findAndCountAll({
+//       where: whereCondition,
+
+//       attributes: [
+//         "id",
+//         "name",
+//         "email",
+//         "address",
+//         "ownerId",
+
+//         [
+//           fn(
+//             "AVG",
+//             col("ratings.rating")
+//           ),
+//           "averageRating",
+//         ],
+//       ],
+
+//       include: [
+//         {
+//           model: User,
+//           as: "owner",
+
+//           attributes: [
+//             "id",
+//             "name",
+//             "email",
+//           ],
+//         },
+
+//         {
+//           model: Rating,
+//           as: "ratings",
+
+//           attributes: [],
+
+//           required: false,
+//         },
+//       ],
+
+//       group: ["Store.id", "owner.id"],
+
+//       order: orderClause,
+
+//       limit: Number(limit),
+
+//       offset,
+
+//       subQuery: false,
+//     });
+
+//   // =====================================================
+//   // COUNT
+//   // =====================================================
+
+//   const totalStores = Array.isArray(count)
+//     ? count.length
+//     : count;
+
+//   // =====================================================
+//   // RESPONSE
+//   // =====================================================
+
+//   return {
+//     totalStores,
+
+//     currentPage: Number(page),
+
+//     totalPages: Math.ceil(
+//       totalStores / Number(limit)
+//     ),
+
+//     stores: rows,
+//   };
+// };
+
+//+++++++++++++++++++++++++++++++++
+
 
 /**
  * Get store by ID
