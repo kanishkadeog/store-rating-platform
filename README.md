@@ -28,7 +28,8 @@ https://railway.com/project/7c148663-606c-41ff-8e92-54c649d5f6ce/service/4fe2c80
 ---
 ### Snapshot :- 
 
-1. Login Page :-
+1. Login Page :- <img width="1878" height="873" alt="image" src="https://github.com/user-attachments/assets/c2e72282-71a7-4b26-9d72-4428c8dd9210" />
+
 
    
 2. Admin Page :-
