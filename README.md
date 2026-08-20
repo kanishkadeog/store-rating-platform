@@ -26,6 +26,33 @@ https://railway.com/project/7c148663-606c-41ff-8e92-54c649d5f6ce/service/4fe2c80
 
 
 ---
+### Snapshot :- 
+
+1. Login Page :-
+
+   
+2. Admin Page :-
+   Dashboard :- <img width="1914" height="871" alt="image" src="https://github.com/user-attachments/assets/1e08cf9d-90bf-4736-9d5e-85c5018e6841" />
+    User Management :- <img width="1865" height="877" alt="image" src="https://github.com/user-attachments/assets/832c4358-1265-4937-9ee1-11016651ddf4" />
+    User Detail:- <img width="1881" height="816" alt="image" src="https://github.com/user-attachments/assets/3e2451f7-c334-4043-9018-728baff10d7b" />
+    Store Management :- <img width="1894" height="885" alt="image" src="https://github.com/user-attachments/assets/2edcf767-c820-4d20-b749-920a399cb152" />
+    <img width="1888" height="877" alt="image" src="https://github.com/user-attachments/assets/8d7b7a6a-1685-4135-adc1-7a9886dc84ca" />
+    Store Detail :- <img width="1905" height="869" alt="image" src="https://github.com/user-attachments/assets/81f6f7e1-2a1e-4a9b-89cf-fb40b46a2481" />
+    Create User :- <img width="1894" height="867" alt="image" src="https://github.com/user-attachments/assets/459d29b5-f80d-40a2-988f-ea4906aa0ead" />
+    Create Store :- <img width="1837" height="861" alt="image" src="https://github.com/user-attachments/assets/b83a0a1a-4746-47f1-a4f8-4a97de0f0df0" />
+
+4. Owner Page :-
+   Dashboard :- <img width="1882" height="872" alt="image" src="https://github.com/user-attachments/assets/5e9578f3-1a07-4fbc-9f82-72124106fef9" />
+    <img width="1880" height="870" alt="image" src="https://github.com/user-attachments/assets/a26eec75-a5d0-4a97-a493-fd34626cae4b" />
+    Rating :- <img width="1875" height="876" alt="image" src="https://github.com/user-attachments/assets/11e4264f-800d-4d6a-bcfa-3a36625b5e23" />
+
+   
+6. User Page :-
+   Dashboard :- <img width="1881" height="876" alt="image" src="https://github.com/user-attachments/assets/f9d07fad-16d1-4c9b-903b-82275f6e4f2a" />
+   <img width="1900" height="864" alt="image" src="https://github.com/user-attachments/assets/b5503150-375e-4678-b944-cdb074d48bf0" />
+
+
+---
 
 ## 📌 Project Overview
 
