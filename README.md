@@ -895,10 +895,27 @@ Potential future enhancements include:
 
 ---
 
+## Demo Accounts
+
+```
+USER
+Email: shital@gmail.com
+Password: Shital@123
+
+OWNER
+Email: govinda@gmail.com
+Password: Owner@123
+
+ADMIN
+Email: admin@gmail.com
+Password: Admin@123
+```
+
+---
+
 ### 👨‍💻 Author
 
 Kanishka Ramesh Deogade
-
 Full Stack Developer
 
 Technologies:
